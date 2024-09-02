@@ -3,10 +3,7 @@ package me.jun.core.blog.application
 import me.jun.core.blog.application.dto.ArticleResponse
 import me.jun.core.blog.application.exception.ArticleNotFoundException
 import me.jun.core.blog.domain.repository.ArticleRepository
-import me.jun.support.article
-import me.jun.support.articleResponse
-import me.jun.support.createArticleRequest
-import me.jun.support.retrieveArticleRequest
+import me.jun.support.*
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
@@ -61,5 +58,26 @@ class ArticleServiceTest {
         assertThrows(
             ArticleNotFoundException::class.java
         ) { articleService.retrieveArticle(retrieveArticleRequest()) }
+    }
+
+    @Test
+    fun updateArticleTest() {
+        val expected: ArticleResponse = updatedArticleResponse();
+
+        given(articleRepository.findByArticleId(any()))
+            .willReturn(updatedArticle())
+
+        assertThat(articleService.updateArticle(updateArticleRequest()))
+            .isEqualToComparingFieldByField(expected)
+    }
+
+    @Test
+    fun noArticle_updateArticleFailTest() {
+        given(articleRepository.findByArticleId(any()))
+            .willReturn(null)
+
+        assertThrows(
+            ArticleNotFoundException::class.java
+        ) { articleService.updateArticle(updateArticleRequest()) }
     }
 }

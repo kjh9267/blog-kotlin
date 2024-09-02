@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional
 import me.jun.core.blog.application.dto.ArticleResponse
 import me.jun.core.blog.application.dto.CreateArticleRequest
 import me.jun.core.blog.application.dto.RetrieveArticleRequest
+import me.jun.core.blog.application.dto.UpdateArticleRequest
 import me.jun.core.blog.application.exception.ArticleNotFoundException
 import me.jun.core.blog.domain.Article
 import me.jun.core.blog.domain.repository.ArticleRepository
@@ -27,5 +28,12 @@ class ArticleService(private val articleRepository: ArticleRepository) {
         return ArticleResponse.of(article)
     }
 
+    fun updateArticle(request: UpdateArticleRequest): ArticleResponse {
+        val article: Article = articleRepository.findByArticleId(request.articleId)
+            ?: throw ArticleNotFoundException.of(request.articleId.toString())
 
+        val updatedArticle: Article = article.updateArticleInfo(request.newTitle, request.newContent)
+
+        return ArticleResponse.of(updatedArticle)
+    }
 }

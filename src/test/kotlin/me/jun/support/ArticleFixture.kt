@@ -3,6 +3,7 @@ package me.jun.support
 import me.jun.core.blog.application.dto.ArticleResponse
 import me.jun.core.blog.application.dto.CreateArticleRequest
 import me.jun.core.blog.application.dto.RetrieveArticleRequest
+import me.jun.core.blog.application.dto.UpdateArticleRequest
 import me.jun.core.blog.domain.Article
 import me.jun.core.blog.domain.ArticleInfo
 import java.time.Instant
@@ -41,6 +42,16 @@ val articleInfo: () -> ArticleInfo = fun (): ArticleInfo {
     )
 }
 
+val updatedArticle: () -> Article = fun (): Article {
+    return Article(
+        articleId = ARTICLE_ID,
+        articleInfo = updatedArticleInfo(),
+        writerId = WRITER_ID,
+        createdAt = CREATED_AT,
+        updatedAt = UPDATED_AT
+    )
+}
+
 val updatedArticleInfo: () -> ArticleInfo = fun (): ArticleInfo {
     return ArticleInfo(
         title = NEW_TITLE,
@@ -50,6 +61,10 @@ val updatedArticleInfo: () -> ArticleInfo = fun (): ArticleInfo {
 
 val articleResponse: () -> ArticleResponse = fun (): ArticleResponse {
     return ArticleResponse.of(article())
+}
+
+val updatedArticleResponse: () -> ArticleResponse = fun (): ArticleResponse {
+    return ArticleResponse.of(updatedArticle())
 }
 
 val createArticleRequest: () -> CreateArticleRequest = fun (): CreateArticleRequest {
@@ -62,4 +77,13 @@ val createArticleRequest: () -> CreateArticleRequest = fun (): CreateArticleRequ
 
 val retrieveArticleRequest: () -> RetrieveArticleRequest = fun (): RetrieveArticleRequest {
     return RetrieveArticleRequest(ARTICLE_ID)
+}
+
+val updateArticleRequest: () -> UpdateArticleRequest = fun (): UpdateArticleRequest {
+    return UpdateArticleRequest(
+        articleId = ARTICLE_ID,
+        newTitle = NEW_TITLE,
+        newContent = NEW_CONTENT,
+        writerId = WRITER_ID
+    )
 }
