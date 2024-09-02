@@ -1,5 +1,7 @@
 package me.jun.support
 
+import me.jun.core.blog.application.dto.ArticleResponse
+import me.jun.core.blog.application.dto.CreateArticleRequest
 import me.jun.core.blog.domain.Article
 import me.jun.core.blog.domain.ArticleInfo
 import java.time.Instant
@@ -42,5 +44,17 @@ val updatedArticleInfo: () -> ArticleInfo = fun (): ArticleInfo {
     return ArticleInfo(
         title = NEW_TITLE,
         content = NEW_CONTENT
+    )
+}
+
+val articleResponse: () -> ArticleResponse = fun (): ArticleResponse {
+    return ArticleResponse.of(article())
+}
+
+val createArticleRequest: () -> CreateArticleRequest = fun (): CreateArticleRequest {
+    return CreateArticleRequest(
+        title = TITLE,
+        content = CONTENT,
+        writerId = WRITER_ID
     )
 }

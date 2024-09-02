@@ -19,11 +19,11 @@ open class Article(
 
     @Column(nullable = false, updatable = false)
     @CreatedDate
-    open var createdAt: Instant,
+    open var createdAt: Instant?,
 
     @Column(nullable = false)
     @LastModifiedDate
-    open var updatedAt: Instant
+    open var updatedAt: Instant?
 ) {
 
     fun updateArticleInfo(newTitle: String, newContent: String): Article {

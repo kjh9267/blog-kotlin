@@ -3,7 +3,6 @@ package me.jun.core.blog.domain.repository
 import me.jun.core.blog.domain.Article
 import me.jun.support.ARTICLE_ID
 import me.jun.support.article
-import me.jun.support.articleInfo
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles
 class ArticleRepositoryTest {
 
     @Autowired
-    lateinit var articleRepository: ArticleRepository;
+    private lateinit var articleRepository: ArticleRepository;
 
     @Test
     fun findByIdTest() {
