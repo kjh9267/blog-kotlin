@@ -10,8 +10,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentMatchers.any
+import org.mockito.BDDMockito.doNothing
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
+import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
 
 @ExtendWith(MockitoExtension::class)
@@ -79,5 +81,17 @@ class ArticleServiceTest {
         assertThrows(
             ArticleNotFoundException::class.java
         ) { articleService.updateArticle(updateArticleRequest()) }
+    }
+
+    @Test
+    fun deleteArticleTest() {
+        doNothing()
+            .`when`(articleRepository)
+            .deleteById(any())
+
+        articleService.deleteArticle(deleteArticleRequest())
+
+        verify(articleRepository)
+            .deleteById(ARTICLE_ID)
     }
 }

@@ -1,9 +1,6 @@
 package me.jun.support
 
-import me.jun.core.blog.application.dto.ArticleResponse
-import me.jun.core.blog.application.dto.CreateArticleRequest
-import me.jun.core.blog.application.dto.RetrieveArticleRequest
-import me.jun.core.blog.application.dto.UpdateArticleRequest
+import me.jun.core.blog.application.dto.*
 import me.jun.core.blog.domain.Article
 import me.jun.core.blog.domain.ArticleInfo
 import java.time.Instant
@@ -86,4 +83,8 @@ val updateArticleRequest: () -> UpdateArticleRequest = fun (): UpdateArticleRequ
         newContent = NEW_CONTENT,
         writerId = WRITER_ID
     )
+}
+
+val deleteArticleRequest: () -> DeleteArticleRequest = fun (): DeleteArticleRequest {
+    return DeleteArticleRequest(ARTICLE_ID)
 }
