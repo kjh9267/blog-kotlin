@@ -18,9 +18,9 @@ class ArticleService(private val articleRepository: ArticleRepository) {
         return ArticleResponse.of(savedArticle)
     }
 
-    fun retrieveArticle(request: RetrieveArticleRequest): ArticleResponse {
-        val article: Article = articleRepository.findByArticleId(request.id)
-            ?: throw ArticleNotFoundException.of(request.id.toString())
+    fun retrieveArticle(request: RetrieveArticleRequest?): ArticleResponse {
+        val article: Article = articleRepository.findByArticleId(request?.id)
+            ?: throw ArticleNotFoundException.of(request?.id.toString())
 
         return ArticleResponse.of(article)
     }
