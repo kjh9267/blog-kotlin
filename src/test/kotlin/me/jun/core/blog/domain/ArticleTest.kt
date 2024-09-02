@@ -25,7 +25,7 @@ class ArticleTest {
     fun updateArticleInfoTest() {
         val expected: Article = Article(
             id = ARTICLE_ID,
-            articleInfo = ArticleInfo(title = NEW_TITLE, content = NEW_CONTENT),
+            articleInfo = updatedArticleInfo(),
             writerId = WRITER_ID,
             createdAt = CREATED_AT,
             updatedAt = UPDATED_AT
