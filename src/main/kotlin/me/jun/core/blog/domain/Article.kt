@@ -9,7 +9,7 @@ import java.time.Instant
 open class Article(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    open var id: Long?,
+    open var articleId: Long?,
 
     @Embedded
     open var articleInfo: ArticleInfo?,
@@ -37,7 +37,7 @@ open class Article(
         if (this === other) return true
         if (other !is Article) return false
 
-        if (id != other.id) return false
+        if (articleId != other.articleId) return false
         if (articleInfo != other.articleInfo) return false
         if (writerId != other.writerId) return false
         if (createdAt != other.createdAt) return false
@@ -47,7 +47,7 @@ open class Article(
     }
 
     override fun hashCode(): Int {
-        var result = id?.hashCode() ?: 0
+        var result = articleId?.hashCode() ?: 0
         result = 31 * result + (articleInfo?.hashCode() ?: 0)
         result = 31 * result + writerId.hashCode()
         result = 31 * result + createdAt.hashCode()

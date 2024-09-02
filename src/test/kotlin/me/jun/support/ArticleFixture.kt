@@ -2,6 +2,7 @@ package me.jun.support
 
 import me.jun.core.blog.application.dto.ArticleResponse
 import me.jun.core.blog.application.dto.CreateArticleRequest
+import me.jun.core.blog.application.dto.RetrieveArticleRequest
 import me.jun.core.blog.domain.Article
 import me.jun.core.blog.domain.ArticleInfo
 import java.time.Instant
@@ -25,7 +26,7 @@ val UPDATED_AT: Instant = now();
 
 val article: () -> Article = fun (): Article {
     return Article(
-        id = ARTICLE_ID,
+        articleId = ARTICLE_ID,
         articleInfo = articleInfo(),
         writerId = WRITER_ID,
         createdAt = CREATED_AT,
@@ -57,4 +58,8 @@ val createArticleRequest: () -> CreateArticleRequest = fun (): CreateArticleRequ
         content = CONTENT,
         writerId = WRITER_ID
     )
+}
+
+val retrieveArticleRequest: () -> RetrieveArticleRequest = fun (): RetrieveArticleRequest {
+    return RetrieveArticleRequest(ARTICLE_ID)
 }

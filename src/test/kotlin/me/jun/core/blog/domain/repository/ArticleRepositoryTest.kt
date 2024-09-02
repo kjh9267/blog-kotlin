@@ -7,27 +7,36 @@ import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.annotation.DirtiesContext.ClassMode
 import org.springframework.test.context.ActiveProfiles
 
 @ActiveProfiles("test")
 @DataJpaTest
 @Suppress("Deprecation")
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 class ArticleRepositoryTest {
 
     @Autowired
     private lateinit var articleRepository: ArticleRepository;
 
     @Test
-    fun findByIdTest() {
+    fun findByArticleIdTest() {
         val expected: Article = article()
 
         articleRepository.save(
             article().apply {
-                this.id = null
+                this.articleId = null
             }
         )
 
-        assertThat(articleRepository.findById(ARTICLE_ID).get())
+        assertThat(articleRepository.findByArticleId(ARTICLE_ID))
             .isEqualToComparingFieldByField(expected)
+    }
+
+    @Test
+    fun findByArticleIdFailTest() {
+        assertThat(articleRepository.findByArticleId(ARTICLE_ID))
+            .isNull();
     }
 }

@@ -10,7 +10,7 @@ class ArticleTest {
     @Test
     fun constructorTest() {
         val expected: Article = Article(
-            id = ARTICLE_ID,
+            articleId = ARTICLE_ID,
             articleInfo = articleInfo(),
             writerId = WRITER_ID,
             createdAt = CREATED_AT,
@@ -24,7 +24,7 @@ class ArticleTest {
     @Test
     fun updateArticleInfoTest() {
         val expected: Article = Article(
-            id = ARTICLE_ID,
+            articleId = ARTICLE_ID,
             articleInfo = updatedArticleInfo(),
             writerId = WRITER_ID,
             createdAt = CREATED_AT,

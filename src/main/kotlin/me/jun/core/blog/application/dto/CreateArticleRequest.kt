@@ -4,14 +4,14 @@ import me.jun.core.blog.domain.Article
 import me.jun.core.blog.domain.ArticleInfo
 
 data class CreateArticleRequest(
-    private val title: String,
-    private val content: String,
-    private val writerId: Long
+    val title: String,
+    val content: String,
+    val writerId: Long
 ) {
 
     fun toEntity(): Article {
         return Article(
-            id = null,
+            articleId = null,
             articleInfo = ArticleInfo(title, content),
             writerId = writerId,
             createdAt = null,

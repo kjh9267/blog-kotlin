@@ -15,7 +15,7 @@ data class ArticleResponse(
     companion object {
         fun of(article: Article): ArticleResponse {
             return ArticleResponse(
-                id = article.id,
+                id = article.articleId,
                 title = article.articleInfo!!.title,
                 content = article.articleInfo!!.content,
                 writerId = article.writerId,
