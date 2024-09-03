@@ -20,7 +20,7 @@ class JwtProvider(
             .compact()
     }
 
-    fun extractSubject(token: String): String {
+    fun extractSubject(token: String?): String {
         try {
             return createParser()
                 .parseClaimsJws(token)
