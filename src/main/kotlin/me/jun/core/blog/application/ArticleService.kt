@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service
 @Transactional
 class ArticleService(private val articleRepository: ArticleRepository) {
 
-    fun createArticle(request: CreateArticleRequest): ArticleResponse {
-        val article = request.toEntity()
+    fun createArticle(request: CreateArticleRequest?): ArticleResponse {
+        val article = request!!.toEntity()
         val savedArticle = articleRepository.save(article)
 
         return ArticleResponse.of(savedArticle)
@@ -25,8 +25,8 @@ class ArticleService(private val articleRepository: ArticleRepository) {
         return ArticleResponse.of(article)
     }
 
-    fun updateArticle(request: UpdateArticleRequest): ArticleResponse {
-        val article: Article = articleRepository.findByArticleId(request.articleId)
+    fun updateArticle(request: UpdateArticleRequest?): ArticleResponse {
+        val article: Article = articleRepository.findByArticleId(request!!.articleId)
             ?: throw ArticleNotFoundException.of(request.articleId.toString())
 
         val updatedArticle: Article = article.updateArticleInfo(request.newTitle, request.newContent)
@@ -34,7 +34,7 @@ class ArticleService(private val articleRepository: ArticleRepository) {
         return ArticleResponse.of(updatedArticle)
     }
 
-    fun deleteArticle(request: DeleteArticleRequest): Unit {
-        articleRepository.deleteById(request.articleId)
+    fun deleteArticle(request: DeleteArticleRequest?): Unit {
+        articleRepository.deleteById(request!!.articleId)
     }
 }

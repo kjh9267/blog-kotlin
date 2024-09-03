@@ -18,17 +18,17 @@ const val NEW_CONTENT: String = "new content string"
 
 const val WRITER_ID: Long = 1L;
 
-val CREATED_AT: Instant = now();
+val ARTICLE_CREATED_AT: Instant = now();
 
-val UPDATED_AT: Instant = now();
+val ARTICLE_UPDATED_AT: Instant = now();
 
 val article: () -> Article = fun (): Article {
     return Article(
         articleId = ARTICLE_ID,
         articleInfo = articleInfo(),
         writerId = WRITER_ID,
-        createdAt = CREATED_AT,
-        updatedAt = UPDATED_AT
+        createdAt = ARTICLE_CREATED_AT,
+        updatedAt = ARTICLE_UPDATED_AT
     )
 }
 
@@ -44,8 +44,8 @@ val updatedArticle: () -> Article = fun (): Article {
         articleId = ARTICLE_ID,
         articleInfo = updatedArticleInfo(),
         writerId = WRITER_ID,
-        createdAt = CREATED_AT,
-        updatedAt = UPDATED_AT
+        createdAt = ARTICLE_CREATED_AT,
+        updatedAt = ARTICLE_UPDATED_AT
     )
 }
 

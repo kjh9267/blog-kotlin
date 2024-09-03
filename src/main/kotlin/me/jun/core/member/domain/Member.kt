@@ -1,4 +1,4 @@
-package me.jun.core.blog.domain
+package me.jun.core.member.domain
 
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
@@ -6,16 +6,23 @@ import org.springframework.data.annotation.LastModifiedDate
 import java.time.Instant
 
 @Entity
-open class Article(
+open class Member(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    open var articleId: Long?,
-
-    @Embedded
-    open var articleInfo: ArticleInfo?,
+    open var memberId: Long?,
 
     @Column(nullable = false)
-    open var writerId: Long,
+    open var name: String,
+
+    @Column(nullable = false)
+    open var email: String,
+
+    @Embedded
+    open var password: Password,
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    open var role: Role,
 
     @Column(nullable = false, updatable = false)
     @CreatedDate
@@ -26,23 +33,20 @@ open class Article(
     open var updatedAt: Instant?
 ) {
 
-    fun updateArticleInfo(newTitle: String, newContent: String): Article {
-        articleInfo = articleInfo?.updateTitle(newTitle)
-            ?.updateContent(newContent)
-
-        return this;
+    fun validatePassword(password: String) {
+        this.password.validate(password)
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is Article) return false
+        if (other !is Member) return false
 
-        if (articleId != other.articleId) return false
+        if (memberId != other.memberId) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return articleId?.hashCode() ?: 0
+        return memberId?.hashCode() ?: 0
     }
 }
