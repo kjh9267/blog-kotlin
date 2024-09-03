@@ -1,6 +1,7 @@
 package me.jun.core.blog.persentation
 
 import me.jun.core.blog.application.ArticleService
+import me.jun.core.blog.application.exception.ArticleNotFoundException
 import me.jun.support.articleResponse
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
@@ -45,5 +46,30 @@ class ArticleControllerTest {
             .andExpect(jsonPath("writerId").exists())
             .andExpect(jsonPath("createdAt").exists())
             .andExpect(jsonPath("updatedAt").exists())
+    }
+
+    @Test
+    fun wrongPathVariable_retrieveArticleFailTest() {
+        mockMvc.perform(
+            get("/api/blog/articles/asdf")
+                .accept(APPLICATION_JSON)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists());
+    }
+
+    @Test
+    fun noArticle_retrieveArticleFailTest() {
+        given(articleService.retrieveArticle(any()))
+            .willThrow(ArticleNotFoundException.of("1"))
+
+        mockMvc.perform(
+            get("/api/blog/articles/1")
+                .accept(APPLICATION_JSON)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
     }
 }
