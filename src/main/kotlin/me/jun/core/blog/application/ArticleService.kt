@@ -25,8 +25,8 @@ class ArticleService(private val articleRepository: ArticleRepository) {
         return ArticleResponse.of(article)
     }
 
-    fun updateArticle(request: UpdateArticleRequest): ArticleResponse {
-        val article: Article = articleRepository.findByArticleId(request.articleId)
+    fun updateArticle(request: UpdateArticleRequest?): ArticleResponse {
+        val article: Article = articleRepository.findByArticleId(request!!.articleId)
             ?: throw ArticleNotFoundException.of(request.articleId.toString())
 
         val updatedArticle: Article = article.updateArticleInfo(request.newTitle, request.newContent)
