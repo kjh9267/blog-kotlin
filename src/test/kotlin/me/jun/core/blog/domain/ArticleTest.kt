@@ -13,8 +13,8 @@ class ArticleTest {
             articleId = ARTICLE_ID,
             articleInfo = articleInfo(),
             writerId = WRITER_ID,
-            createdAt = CREATED_AT,
-            updatedAt = UPDATED_AT
+            createdAt = ARTICLE_CREATED_AT,
+            updatedAt = ARTICLE_UPDATED_AT
         )
 
         assertThat(article())
@@ -27,8 +27,8 @@ class ArticleTest {
             articleId = ARTICLE_ID,
             articleInfo = updatedArticleInfo(),
             writerId = WRITER_ID,
-            createdAt = CREATED_AT,
-            updatedAt = UPDATED_AT
+            createdAt = ARTICLE_CREATED_AT,
+            updatedAt = ARTICLE_UPDATED_AT
         )
 
         assertThat(
