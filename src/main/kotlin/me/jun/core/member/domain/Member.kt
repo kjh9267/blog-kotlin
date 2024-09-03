@@ -1,15 +1,36 @@
 package me.jun.core.member.domain
 
+import jakarta.persistence.*
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
 import java.time.Instant
 
+@Entity
 open class Member(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     open var memberId: Long?,
+
+    @Column(nullable = false)
     open var name: String,
+
+    @Column(nullable = false)
     open var email: String,
+
+    @Embedded
     open var password: Password,
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     open var role: Role,
-    open var createdAt: Instant,
-    open var updatedAt: Instant
+
+    @Column(nullable = false, updatable = false)
+    @CreatedDate
+    open var createdAt: Instant?,
+
+    @Column(nullable = false)
+    @LastModifiedDate
+    open var updatedAt: Instant?
 ) {
 
     fun validatePassword(password: String) {

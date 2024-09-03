@@ -1,8 +1,15 @@
 package me.jun.core.member.domain
 
+import jakarta.persistence.Column
+import jakarta.persistence.Embeddable
 import me.jun.core.member.domain.exception.WrongPasswordException
 
+@Embeddable
 open class Password(
+    @Column(
+        name = "password",
+        nullable = false
+    )
     open var value: String
 ) {
 
