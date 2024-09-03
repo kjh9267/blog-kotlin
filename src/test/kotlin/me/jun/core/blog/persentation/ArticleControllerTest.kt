@@ -8,8 +8,8 @@ import me.jun.core.blog.application.ArticleService
 import me.jun.core.blog.application.exception.ArticleNotFoundException
 import me.jun.support.*
 import org.junit.jupiter.api.Test
-import org.mockito.BDDMockito.any
-import org.mockito.BDDMockito.given
+import org.mockito.BDDMockito.*
+import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -287,6 +287,87 @@ class ArticleControllerTest {
                 .contentType(APPLICATION_JSON)
                 .header(AUTHORIZATION, TOKEN)
                 .content(content)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun deleteArticleTest() {
+        given(jwtProvider.extractSubject(any()))
+            .willReturn(EMAIL)
+
+        given(memberIdExtractor.extractMemberId(any()))
+            .willReturn(WRITER_ID)
+
+        doNothing()
+            .`when`(articleService)
+            .deleteArticle(any())
+
+        mockMvc.perform(
+            delete("/api/blog/articles/1")
+                .header(AUTHORIZATION, TOKEN)
+        )
+            .andDo(print())
+            .andExpect(status().is2xxSuccessful)
+
+        Mockito.verify(articleService)
+            .deleteArticle(deleteArticleRequest())
+    }
+
+    @Test
+    fun wrongPathVariable_deleteArticleTest() {
+        given(jwtProvider.extractSubject(any()))
+            .willReturn(EMAIL)
+
+        given(memberIdExtractor.extractMemberId(any()))
+            .willReturn(WRITER_ID)
+
+        mockMvc.perform(
+            delete("/api/blog/articles/asdf")
+                .header(AUTHORIZATION, TOKEN)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun noToken_deleteArticleFailTest() {
+        mockMvc.perform(
+            delete("/api/blog/articles/1")
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun invalidToken_deleteArticleFailTest() {
+        given(jwtProvider.extractSubject(any()))
+            .willThrow(InvalidTokenException.of(TOKEN))
+
+        mockMvc.perform(
+            delete("/api/blog/articles/1")
+                .header(AUTHORIZATION, "wrong token")
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun unknownWriter_deleteArticleFailTest() {
+        given(jwtProvider.extractSubject(any()))
+            .willReturn(EMAIL)
+
+        given(memberIdExtractor.extractMemberId(any()))
+            .willThrow(InvalidTokenException.of(TOKEN))
+
+        mockMvc.perform(
+            delete("/api/blog/articles/1")
+                .header(AUTHORIZATION, TOKEN)
         )
             .andDo(print())
             .andExpect(status().is4xxClientError)

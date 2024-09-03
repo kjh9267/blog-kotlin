@@ -34,7 +34,7 @@ class ArticleService(private val articleRepository: ArticleRepository) {
         return ArticleResponse.of(updatedArticle)
     }
 
-    fun deleteArticle(request: DeleteArticleRequest): Unit {
-        articleRepository.deleteById(request.articleId)
+    fun deleteArticle(request: DeleteArticleRequest?): Unit {
+        articleRepository.deleteById(request!!.articleId)
     }
 }

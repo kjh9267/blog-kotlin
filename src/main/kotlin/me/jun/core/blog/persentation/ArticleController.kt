@@ -3,10 +3,7 @@ package me.jun.core.blog.persentation
 import jakarta.validation.Valid
 import me.jun.common.security.WriterId
 import me.jun.core.blog.application.ArticleService
-import me.jun.core.blog.application.dto.ArticleResponse
-import me.jun.core.blog.application.dto.CreateArticleRequest
-import me.jun.core.blog.application.dto.RetrieveArticleRequest
-import me.jun.core.blog.application.dto.UpdateArticleRequest
+import me.jun.core.blog.application.dto.*
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -59,5 +56,15 @@ class ArticleController(
         )
         return ResponseEntity.ok()
             .body(articleResponse)
+    }
+
+    @DeleteMapping("/{articleId}")
+    fun deleteArticle(
+        @PathVariable articleId: Long,
+        @WriterId writerId: Long
+    ): ResponseEntity<Void> {
+        articleService.deleteArticle(DeleteArticleRequest.of(articleId))
+        return ResponseEntity.noContent()
+            .build()
     }
 }
