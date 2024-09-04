@@ -7,11 +7,13 @@ import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 
 @ActiveProfiles("test")
 @DataJpaTest
 @Suppress("Deprecation")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class MemberRepositoryTest {
 
     @Autowired
@@ -41,5 +43,29 @@ class MemberRepositoryTest {
     fun findByMemberIdFailTest() {
         assertThat(memberRepository.findByMemberId(0L))
             .isNull();
+    }
+
+    @Test
+    fun findByEmailTest() {
+        val expected: Member = Member(
+            memberId = MEMBER_ID,
+            name = MEMBER_NAME,
+            email = MEMBER_EMAIL,
+            password = password(),
+            role = Role.USER,
+            createdAt = MEMBER_CREATED_AT,
+            updatedAt = MEMBER_UPDATED_AT
+        )
+
+        memberRepository.save(user())
+
+        assertThat(memberRepository.findByEmail(EMAIL))
+            .isEqualToComparingFieldByField(expected)
+    }
+
+    @Test
+    fun noMember_findByEmailFailTest() {
+        assertThat(memberRepository.findByEmail(EMAIL))
+            .isNull()
     }
 }

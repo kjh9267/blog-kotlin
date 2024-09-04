@@ -11,6 +11,9 @@ open class Article(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     open var articleId: Long?,
 
+    @Column(nullable = false)
+    open var categoryId: Long?,
+
     @Embedded
     open var articleInfo: ArticleInfo?,
 

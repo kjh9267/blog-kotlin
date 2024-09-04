@@ -1,5 +1,9 @@
 package me.jun.support
 
+import me.jun.core.member.application.dto.LoginRequest
+import me.jun.core.member.application.dto.MemberResponse
+import me.jun.core.member.application.dto.RegisterRequest
+import me.jun.core.member.application.dto.RetrieveMemberRequest
 import me.jun.core.member.domain.Member
 import me.jun.core.member.domain.Password
 import me.jun.core.member.domain.Role
@@ -44,4 +48,27 @@ val user: () -> Member = fun(): Member {
 
 val password: () -> Password = fun (): Password {
     return Password(PASSWORD)
+}
+
+val registerRequest: () -> RegisterRequest = fun (): RegisterRequest {
+    return RegisterRequest(
+        email = MEMBER_EMAIL,
+        name = MEMBER_NAME,
+        password = PASSWORD
+    )
+}
+
+val memberResponse: () -> MemberResponse = fun (): MemberResponse {
+    return MemberResponse.of(user())
+}
+
+val retrieveMemberRequest: () -> RetrieveMemberRequest = fun (): RetrieveMemberRequest {
+    return RetrieveMemberRequest(EMAIL)
+}
+
+val loginRequest: () -> LoginRequest = fun (): LoginRequest {
+    return LoginRequest(
+        email = EMAIL,
+        password = PASSWORD
+    )
 }

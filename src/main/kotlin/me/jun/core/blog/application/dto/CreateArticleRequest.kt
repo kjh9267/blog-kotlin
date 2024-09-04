@@ -9,12 +9,15 @@ data class CreateArticleRequest(
     var title: String,
     @field:NotBlank
     var content: String,
+    @field:NotBlank
+    var categoryName: String,
     var writerId: Long?
 ) {
 
     fun toEntity(): Article {
         return Article(
             articleId = null,
+            categoryId = null,
             articleInfo = ArticleInfo(title, content),
             writerId = writerId!!,
             createdAt = null,
