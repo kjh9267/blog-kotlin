@@ -2,8 +2,9 @@ package me.jun.core.member.persentation
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import me.jun.core.member.application.MemberService
-import me.jun.support.memberResponse
-import me.jun.support.registerRequest
+import me.jun.core.member.application.exception.MemberNotFoundException
+import me.jun.core.member.domain.exception.WrongPasswordException
+import me.jun.support.*
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.BDDMockito.given
@@ -79,6 +80,79 @@ class MemberControllerTest {
 
         mockMvc.perform(
             post("/api/member/register")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .content(wrongContent)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun loginTest() {
+        val content: String = objectMapper.writeValueAsString(loginRequest())
+
+        given(memberService.login(any()))
+            .willReturn(tokenResponse())
+
+        mockMvc.perform(
+            post("/api/member/login")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .content(content)
+        )
+            .andDo(print())
+            .andExpect(status().is2xxSuccessful)
+            .andExpect(jsonPath("token").exists())
+    }
+
+    @Test
+    fun noMember_loginFailTest() {
+        val content: String = objectMapper.writeValueAsString(loginRequest())
+
+        given(memberService.login(any()))
+            .willThrow(MemberNotFoundException.of(MEMBER_EMAIL))
+
+        mockMvc.perform(
+            post("/api/member/login")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .content(content)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun wrongContent_loginFailTest() {
+        val wrongContent: String = objectMapper.writeValueAsString(
+            loginRequest().apply {
+                this.email = "wrong email"
+            }
+        )
+
+        mockMvc.perform(
+            post("/api/member/login")
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .content(wrongContent)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun wrongPassword_loginFailTest() {
+        val wrongContent: String = objectMapper.writeValueAsString(loginRequest())
+
+        given(memberService.login(any()))
+            .willThrow(WrongPasswordException.of(PASSWORD))
+
+        mockMvc.perform(
+            post("/api/member/login")
                 .accept(APPLICATION_JSON)
                 .contentType(APPLICATION_JSON)
                 .content(wrongContent)

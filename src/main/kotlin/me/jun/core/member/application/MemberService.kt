@@ -28,8 +28,8 @@ class MemberService(
         return MemberResponse.of(member)
     }
 
-    fun login(request: LoginRequest): TokenResponse {
-        val member: Member = memberRepository.findByEmail(request.email)
+    fun login(request: LoginRequest?): TokenResponse {
+        val member: Member = memberRepository.findByEmail(request!!.email)
             ?: throw MemberNotFoundException.of(request.email)
 
         member.validatePassword(request.password)
