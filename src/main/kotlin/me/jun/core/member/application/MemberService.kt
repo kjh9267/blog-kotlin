@@ -1,10 +1,7 @@
 package me.jun.core.member.application
 
 import me.jun.common.security.JwtProvider
-import me.jun.core.member.application.dto.LoginRequest
-import me.jun.core.member.application.dto.MemberResponse
-import me.jun.core.member.application.dto.RegisterRequest
-import me.jun.core.member.application.dto.TokenResponse
+import me.jun.core.member.application.dto.*
 import me.jun.core.member.application.exception.MemberNotFoundException
 import me.jun.core.member.domain.Member
 import me.jun.core.member.domain.repository.MemberRepository
@@ -22,6 +19,13 @@ class MemberService(
         val member: Member = request.toEntity()
         val savedMember = memberRepository.save(member)
         return MemberResponse.of(savedMember)
+    }
+
+    fun retrieveMember(request: RetrieveMemberRequest?): MemberResponse {
+        val member: Member = memberRepository.findByEmail(request!!.email)
+            ?: throw MemberNotFoundException.of(request.email)
+
+        return MemberResponse.of(member)
     }
 
     fun login(request: LoginRequest): TokenResponse {

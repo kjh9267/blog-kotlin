@@ -5,7 +5,6 @@ import me.jun.core.member.application.dto.LoginRequest
 import me.jun.core.member.application.dto.MemberResponse
 import me.jun.core.member.application.dto.TokenResponse
 import me.jun.core.member.application.exception.MemberNotFoundException
-import me.jun.core.member.domain.Password
 import me.jun.core.member.domain.exception.WrongPasswordException
 import me.jun.core.member.domain.repository.MemberRepository
 import me.jun.support.*
@@ -48,6 +47,29 @@ class MemberServiceTest {
 
         assertThat(memberService.register(registerRequest()))
             .isEqualToComparingFieldByField(expected)
+    }
+
+    @Test
+    fun retrieveMemberTest() {
+        val expected: MemberResponse = memberResponse()
+
+        given(memberRepository.findByEmail(any()))
+            .willReturn(user())
+
+        assertThat(memberService.retrieveMember(retrieveMemberRequest()))
+            .isEqualToComparingFieldByField(expected)
+    }
+
+    @Test
+    fun noMember_retrieveMemberFailTest() {
+        given(memberRepository.findByEmail(any()))
+            .willThrow(MemberNotFoundException.of(EMAIL))
+
+        assertThrows(
+            MemberNotFoundException::class.java,
+        ) {
+            memberService.retrieveMember(retrieveMemberRequest())
+        }
     }
 
     @Test
