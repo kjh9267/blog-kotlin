@@ -15,8 +15,8 @@ class MemberService(
     private val jwtProvider: JwtProvider
 ) {
 
-    fun register(request: RegisterRequest): MemberResponse {
-        val member: Member = request.toEntity()
+    fun register(request: RegisterRequest?): MemberResponse {
+        val member: Member = request!!.toEntity()
         val savedMember = memberRepository.save(member)
         return MemberResponse.of(savedMember)
     }
