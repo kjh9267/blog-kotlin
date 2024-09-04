@@ -12,9 +12,9 @@ class CategoryMatchingService {
         category.incrementMappedArticleCount()
     }
 
-    fun changeCategory(article: Article, newCategory: Category, oldCategory: Category): Unit {
-        article.categoryId = newCategory.categoryId
+    fun changeCategory(article: Article?, newCategory: Category?, oldCategory: Category?): Unit {
+        article!!.categoryId = newCategory!!.categoryId
         newCategory.incrementMappedArticleCount()
-        oldCategory.decrementMappedArticleCount()
+        oldCategory!!.decrementMappedArticleCount()
     }
 }

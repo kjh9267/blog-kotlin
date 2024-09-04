@@ -1,6 +1,7 @@
 package me.jun.core.blog.domain.repository
 
 import me.jun.core.blog.domain.Category
+import me.jun.support.CATEGORY_ID
 import me.jun.support.CATEGORY_NAME
 import me.jun.support.category
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
@@ -36,6 +37,26 @@ class CategoryRepositoryTest {
     @Test
     fun noCategory_findByNameFailTest() {
         assertThat(categoryRepository.findByName(CATEGORY_NAME))
+            .isNull()
+    }
+
+    @Test
+    fun findByCategoryIdTest() {
+        val expected: Category = category()
+
+        categoryRepository.save(
+            category().apply {
+                this.categoryId = null
+            }
+        )
+
+        assertThat(categoryRepository.findByCategoryId(CATEGORY_ID))
+            .isEqualToComparingFieldByField(expected)
+    }
+
+    @Test
+    fun noCategory_findByCategoryIdFailTest() {
+        assertThat(categoryRepository.findByCategoryId(CATEGORY_ID))
             .isNull()
     }
 }

@@ -1,12 +1,9 @@
 package me.jun.core.blog.application
 
-import me.jun.core.blog.application.dto.CategoryResponse
 import me.jun.core.blog.domain.Category
 import me.jun.core.blog.domain.repository.CategoryRepository
 import me.jun.support.CATEGORY_NAME
 import me.jun.support.category
-import me.jun.support.categoryResponse
-import me.jun.support.createCategoryRequest
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
