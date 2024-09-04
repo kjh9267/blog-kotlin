@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component
 @Component
 class CategoryMatchingService {
 
-    fun matchCategory(article: Article, category: Category): Unit {
-        article.categoryId = category.categoryId
+    fun matchCategory(article: Article?, category: Category?): Unit {
+        article!!.categoryId = category!!.categoryId
         category.incrementMappedArticleCount()
     }
 

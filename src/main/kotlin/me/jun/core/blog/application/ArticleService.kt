@@ -4,20 +4,24 @@ import jakarta.transaction.Transactional
 import me.jun.core.blog.application.dto.*
 import me.jun.core.blog.application.exception.ArticleNotFoundException
 import me.jun.core.blog.domain.Article
+import me.jun.core.blog.domain.Category
 import me.jun.core.blog.domain.repository.ArticleRepository
+import me.jun.core.blog.domain.service.CategoryMatchingService
 import org.springframework.stereotype.Service
 
 @Service
 @Transactional
 class ArticleService(
     private val articleRepository: ArticleRepository,
-    private val categoryService: CategoryService
+    private val categoryService: CategoryService,
+    private val categoryMatchingService: CategoryMatchingService
 ) {
 
     fun createArticle(request: CreateArticleRequest?): ArticleResponse {
-        val article = request!!.toEntity()
-        categoryService.createCategoryOrElseGet(request.categoryName)
-        val savedArticle = articleRepository.save(article)
+        val article: Article = request!!.toEntity()
+        val category: Category = categoryService.createCategoryOrElseGet(request.categoryName)
+        val savedArticle: Article = articleRepository.save(article)
+        categoryMatchingService.matchCategory(savedArticle, category)
 
         return ArticleResponse.of(savedArticle)
     }
