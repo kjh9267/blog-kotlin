@@ -44,4 +44,28 @@ class MemberRepositoryTest {
         assertThat(memberRepository.findByMemberId(0L))
             .isNull();
     }
+
+    @Test
+    fun findByEmailTest() {
+        val expected: Member = Member(
+            memberId = MEMBER_ID,
+            name = MEMBER_NAME,
+            email = MEMBER_EMAIL,
+            password = password(),
+            role = Role.USER,
+            createdAt = MEMBER_CREATED_AT,
+            updatedAt = MEMBER_UPDATED_AT
+        )
+
+        memberRepository.save(user())
+
+        assertThat(memberRepository.findByEmail(EMAIL))
+            .isEqualToComparingFieldByField(expected)
+    }
+
+    @Test
+    fun noMember_findByEmailFailTest() {
+        assertThat(memberRepository.findByEmail(EMAIL))
+            .isNull()
+    }
 }

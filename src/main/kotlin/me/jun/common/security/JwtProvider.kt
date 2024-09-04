@@ -13,7 +13,7 @@ class JwtProvider(
     @Value("\${jwt-key}") val jwtKey: String
 ) {
 
-    fun createToken(email: String): String {
+    fun createToken(email: String?): String {
         return Jwts.builder()
             .setSubject(email)
             .signWith(HS512, jwtKey)
