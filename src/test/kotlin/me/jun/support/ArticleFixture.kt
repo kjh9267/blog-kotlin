@@ -25,6 +25,7 @@ val ARTICLE_UPDATED_AT: Instant = now();
 val article: () -> Article = fun (): Article {
     return Article(
         articleId = ARTICLE_ID,
+        categoryId = CATEGORY_ID,
         articleInfo = articleInfo(),
         writerId = WRITER_ID,
         createdAt = ARTICLE_CREATED_AT,
@@ -42,6 +43,7 @@ val articleInfo: () -> ArticleInfo = fun (): ArticleInfo {
 val updatedArticle: () -> Article = fun (): Article {
     return Article(
         articleId = ARTICLE_ID,
+        categoryId = CATEGORY_ID,
         articleInfo = updatedArticleInfo(),
         writerId = WRITER_ID,
         createdAt = ARTICLE_CREATED_AT,

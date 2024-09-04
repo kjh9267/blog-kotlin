@@ -15,6 +15,7 @@ data class CreateArticleRequest(
     fun toEntity(): Article {
         return Article(
             articleId = null,
+            categoryId = null,
             articleInfo = ArticleInfo(title, content),
             writerId = writerId!!,
             createdAt = null,
