@@ -25,14 +25,23 @@ class ArticleServiceTest {
     @Mock
     private lateinit var articleRepository: ArticleRepository;
 
+    @Mock
+    private lateinit var categoryService: CategoryService
+
     @BeforeEach
     fun setUp() {
-        articleService = ArticleService(articleRepository);
+        articleService = ArticleService(
+            articleRepository = articleRepository,
+            categoryService = categoryService
+        );
     }
 
     @Test
     fun createArticleTest() {
         val expected: ArticleResponse = articleResponse();
+
+        given(categoryService.createCategoryOrElseGet(any()))
+            .willReturn(category())
 
         given(articleRepository.save(any()))
             .willReturn(article())

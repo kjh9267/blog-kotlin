@@ -9,6 +9,8 @@ data class CreateArticleRequest(
     var title: String,
     @field:NotBlank
     var content: String,
+    @field:NotBlank
+    var categoryName: String,
     var writerId: Long?
 ) {
 

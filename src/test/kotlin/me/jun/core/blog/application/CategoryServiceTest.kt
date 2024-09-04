@@ -1,7 +1,9 @@
 package me.jun.core.blog.application
 
 import me.jun.core.blog.application.dto.CategoryResponse
+import me.jun.core.blog.domain.Category
 import me.jun.core.blog.domain.repository.CategoryRepository
+import me.jun.support.CATEGORY_NAME
 import me.jun.support.category
 import me.jun.support.categoryResponse
 import me.jun.support.createCategoryRequest
@@ -30,18 +32,18 @@ class CategoryServiceTest {
 
     @Test
     fun getCategoryTest() {
-        val expected: CategoryResponse = categoryResponse()
+        val expected: Category = category()
 
         given(categoryRepository.findByName(any()))
             .willReturn(category())
 
-        assertThat(categoryService.createCategoryOrElseGet(createCategoryRequest()))
+        assertThat(categoryService.createCategoryOrElseGet(CATEGORY_NAME))
             .isEqualToComparingFieldByField(expected)
     }
 
     @Test
     fun createCategoryTest() {
-        val expected: CategoryResponse = categoryResponse()
+        val expected: Category = category()
 
         given(categoryRepository.findByName(any()))
             .willReturn(null)
@@ -49,7 +51,7 @@ class CategoryServiceTest {
         given(categoryRepository.save(any()))
             .willReturn(category())
 
-        assertThat(categoryService.createCategoryOrElseGet(createCategoryRequest()))
+        assertThat(categoryService.createCategoryOrElseGet(CATEGORY_NAME))
             .isEqualToComparingFieldByField(expected)
     }
 }

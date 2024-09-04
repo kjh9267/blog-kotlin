@@ -9,10 +9,14 @@ import org.springframework.stereotype.Service
 
 @Service
 @Transactional
-class ArticleService(private val articleRepository: ArticleRepository) {
+class ArticleService(
+    private val articleRepository: ArticleRepository,
+    private val categoryService: CategoryService
+) {
 
     fun createArticle(request: CreateArticleRequest?): ArticleResponse {
         val article = request!!.toEntity()
+        categoryService.createCategoryOrElseGet(request.categoryName)
         val savedArticle = articleRepository.save(article)
 
         return ArticleResponse.of(savedArticle)

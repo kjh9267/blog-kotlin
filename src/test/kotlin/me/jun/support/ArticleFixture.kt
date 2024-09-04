@@ -70,6 +70,7 @@ val createArticleRequest: () -> CreateArticleRequest = fun (): CreateArticleRequ
     return CreateArticleRequest(
         title = TITLE,
         content = CONTENT,
+        categoryName = CATEGORY_NAME,
         writerId = WRITER_ID
     )
 }

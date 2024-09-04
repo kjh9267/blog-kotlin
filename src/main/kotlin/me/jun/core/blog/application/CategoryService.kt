@@ -13,12 +13,14 @@ class CategoryService(
     private val categoryRepository: CategoryRepository
 ) {
 
-    fun createCategoryOrElseGet(request: CreateCategoryRequest): CategoryResponse {
-        val category: Category = request.toEntity()
+    fun createCategoryOrElseGet(categoryName: String?): Category {
+        val category: Category = Category(
+            categoryId = null,
+            name = categoryName!!,
+            mappedArticleCount = 0L
+        )
 
-        val savedCategory: Category = (categoryRepository.findByName(request.name)
-            ?: categoryRepository.save(category))
-
-        return CategoryResponse.of(savedCategory)
+        return categoryRepository.findByName(categoryName)
+            ?: categoryRepository.save(category)
     }
 }
