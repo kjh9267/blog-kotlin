@@ -13,7 +13,7 @@ class PostTest {
             postId = POST_ID,
             title = POST_TITLE,
             content = POST_CONTENT,
-            writerId = WRITER_ID,
+            writerId = ARTICLE_WRITER_ID,
             createdAt = POST_CREATED_AT,
             updatedAt = POST_UPDATED_AT
         )

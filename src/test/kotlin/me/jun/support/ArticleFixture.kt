@@ -8,15 +8,15 @@ import java.time.Instant.now
 
 const val ARTICLE_ID: Long = 1L;
 
-const val TITLE: String = "title string"
+const val ARTICLE_TITLE: String = "title string"
 
-const val NEW_TITLE: String = "new title string";
+const val ARTICLE_NEW_TITLE: String = "new title string";
 
-const val CONTENT: String = "content string"
+const val ARTICLE_CONTENT: String = "content string"
 
-const val NEW_CONTENT: String = "new content string"
+const val ARTICLE_NEW_CONTENT: String = "new content string"
 
-const val WRITER_ID: Long = 1L;
+const val ARTICLE_WRITER_ID: Long = 1L;
 
 val ARTICLE_CREATED_AT: Instant = now();
 
@@ -27,7 +27,7 @@ val article: () -> Article = fun (): Article {
         articleId = ARTICLE_ID,
         categoryId = CATEGORY_ID,
         articleInfo = articleInfo(),
-        writerId = WRITER_ID,
+        writerId = ARTICLE_WRITER_ID,
         createdAt = ARTICLE_CREATED_AT,
         updatedAt = ARTICLE_UPDATED_AT
     )
@@ -35,8 +35,8 @@ val article: () -> Article = fun (): Article {
 
 val articleInfo: () -> ArticleInfo = fun (): ArticleInfo {
     return ArticleInfo(
-        title = TITLE,
-        content = CONTENT
+        title = ARTICLE_TITLE,
+        content = ARTICLE_CONTENT
     )
 }
 
@@ -45,7 +45,7 @@ val updatedArticle: () -> Article = fun (): Article {
         articleId = ARTICLE_ID,
         categoryId = CATEGORY_ID,
         articleInfo = updatedArticleInfo(),
-        writerId = WRITER_ID,
+        writerId = ARTICLE_WRITER_ID,
         createdAt = ARTICLE_CREATED_AT,
         updatedAt = ARTICLE_UPDATED_AT
     )
@@ -53,8 +53,8 @@ val updatedArticle: () -> Article = fun (): Article {
 
 val updatedArticleInfo: () -> ArticleInfo = fun (): ArticleInfo {
     return ArticleInfo(
-        title = NEW_TITLE,
-        content = NEW_CONTENT
+        title = ARTICLE_NEW_TITLE,
+        content = ARTICLE_NEW_CONTENT
     )
 }
 
@@ -68,10 +68,10 @@ val updatedArticleResponse: () -> ArticleResponse = fun (): ArticleResponse {
 
 val createArticleRequest: () -> CreateArticleRequest = fun (): CreateArticleRequest {
     return CreateArticleRequest(
-        title = TITLE,
-        content = CONTENT,
+        title = ARTICLE_TITLE,
+        content = ARTICLE_CONTENT,
         categoryName = CATEGORY_NAME,
-        writerId = WRITER_ID
+        writerId = ARTICLE_WRITER_ID
     )
 }
 
@@ -82,9 +82,9 @@ val retrieveArticleRequest: () -> RetrieveArticleRequest = fun (): RetrieveArtic
 val updateArticleRequest: () -> UpdateArticleRequest = fun (): UpdateArticleRequest {
     return UpdateArticleRequest(
         articleId = ARTICLE_ID,
-        newTitle = NEW_TITLE,
-        newContent = NEW_CONTENT,
-        writerId = WRITER_ID
+        newTitle = ARTICLE_NEW_TITLE,
+        newContent = ARTICLE_NEW_CONTENT,
+        writerId = ARTICLE_WRITER_ID
     )
 }
 

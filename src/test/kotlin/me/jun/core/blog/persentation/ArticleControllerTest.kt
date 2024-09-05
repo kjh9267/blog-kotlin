@@ -112,7 +112,7 @@ class ArticleControllerTest {
             .willReturn(EMAIL)
 
         given(memberIdExtractor.extractMemberId(any()))
-            .willReturn(WRITER_ID)
+            .willReturn(ARTICLE_WRITER_ID)
 
         mockMvc.perform(
             post("/api/blog/articles")
@@ -197,7 +197,7 @@ class ArticleControllerTest {
             .willReturn(EMAIL)
 
         given(memberIdExtractor.extractMemberId(any()))
-            .willReturn(WRITER_ID)
+            .willReturn(ARTICLE_WRITER_ID)
 
         given(articleService.updateArticle(any()))
             .willReturn(updatedArticleResponse())
@@ -259,7 +259,7 @@ class ArticleControllerTest {
             .willReturn(EMAIL)
 
         given(memberIdExtractor.extractMemberId(any()))
-            .willReturn(WRITER_ID)
+            .willReturn(ARTICLE_WRITER_ID)
 
         mockMvc.perform(
             put("/api/blog/articles")
@@ -299,7 +299,7 @@ class ArticleControllerTest {
             .willReturn(EMAIL)
 
         given(memberIdExtractor.extractMemberId(any()))
-            .willReturn(WRITER_ID)
+            .willReturn(ARTICLE_WRITER_ID)
 
         doNothing()
             .`when`(articleService)
@@ -322,7 +322,7 @@ class ArticleControllerTest {
             .willReturn(EMAIL)
 
         given(memberIdExtractor.extractMemberId(any()))
-            .willReturn(WRITER_ID)
+            .willReturn(ARTICLE_WRITER_ID)
 
         mockMvc.perform(
             delete("/api/blog/articles/asdf")
