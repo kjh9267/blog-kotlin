@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.BDDMockito.any
-import org.mockito.BDDMockito.given
+import org.mockito.BDDMockito.*
 import org.mockito.Mock
+import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
 
 @ExtendWith(MockitoExtension::class)
@@ -83,5 +83,17 @@ class PostServiceTest {
         ) {
             postService.updatePost(updatePostRequest())
         }
+    }
+
+    @Test
+    fun deletePostTest() {
+        doNothing()
+            .`when`(postRepository)
+            .deleteById(any())
+
+        postService.deletePost(deletePostRequest())
+
+        verify(postRepository)
+            .deleteById(POST_ID)
     }
 }

@@ -1,9 +1,6 @@
 package me.jun.support
 
-import me.jun.core.guestbook.application.dto.CreatePostRequest
-import me.jun.core.guestbook.application.dto.PostResponse
-import me.jun.core.guestbook.application.dto.RetrievePostRequest
-import me.jun.core.guestbook.application.dto.UpdatePostRequest
+import me.jun.core.guestbook.application.dto.*
 import me.jun.core.guestbook.domain.Post
 import java.time.Instant
 import java.time.Instant.now
@@ -86,5 +83,11 @@ val updatePostRequest: () -> UpdatePostRequest = fun (): UpdatePostRequest {
         newTitle = NEW_POST_TITLE,
         newContent = NEW_POST_CONTENT,
         writerId = POST_WRITER_ID
+    )
+}
+
+val deletePostRequest: () -> DeletePostRequest = fun (): DeletePostRequest {
+    return DeletePostRequest(
+        postId = POST_ID
     )
 }

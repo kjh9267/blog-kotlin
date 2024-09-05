@@ -1,9 +1,6 @@
 package me.jun.core.guestbook.application
 
-import me.jun.core.guestbook.application.dto.CreatePostRequest
-import me.jun.core.guestbook.application.dto.PostResponse
-import me.jun.core.guestbook.application.dto.RetrievePostRequest
-import me.jun.core.guestbook.application.dto.UpdatePostRequest
+import me.jun.core.guestbook.application.dto.*
 import me.jun.core.guestbook.application.exception.PostNotFoundException
 import me.jun.core.guestbook.domain.Post
 import me.jun.core.guestbook.domain.repository.PostRepository
@@ -38,4 +35,7 @@ class PostService(
         return PostResponse.of(updatedPost)
     }
 
+    fun deletePost(request: DeletePostRequest): Unit {
+        postRepository.deleteById(request.postId)
+    }
 }
