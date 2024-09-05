@@ -3,10 +3,7 @@ package me.jun.core.guestbook.application
 import me.jun.core.guestbook.application.dto.PostResponse
 import me.jun.core.guestbook.application.exception.PostNotFoundException
 import me.jun.core.guestbook.domain.repository.PostRepository
-import me.jun.support.createPostRequest
-import me.jun.support.post
-import me.jun.support.postResponse
-import me.jun.support.retrievePostRequest
+import me.jun.support.*
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
@@ -62,6 +59,29 @@ class PostServiceTest {
             PostNotFoundException::class.java,
         ) {
             postService.retrievePost(retrievePostRequest())
+        }
+    }
+
+    @Test
+    fun updatePostTest() {
+        val expected: PostResponse = updatedPostResponse()
+
+        given(postRepository.findByPostId(any()))
+            .willReturn(updatedPost())
+
+        assertThat(postService.updatePost(updatePostRequest()))
+            .isEqualToComparingFieldByField(expected)
+    }
+
+    @Test
+    fun noPost_updatePostFailTest() {
+        given(postRepository.findByPostId(any()))
+            .willThrow(PostNotFoundException.of(POST_ID.toString()))
+
+        assertThrows(
+            PostNotFoundException::class.java
+        ) {
+            postService.updatePost(updatePostRequest())
         }
     }
 }

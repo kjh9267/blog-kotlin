@@ -3,6 +3,7 @@ package me.jun.support
 import me.jun.core.guestbook.application.dto.CreatePostRequest
 import me.jun.core.guestbook.application.dto.PostResponse
 import me.jun.core.guestbook.application.dto.RetrievePostRequest
+import me.jun.core.guestbook.application.dto.UpdatePostRequest
 import me.jun.core.guestbook.domain.Post
 import java.time.Instant
 import java.time.Instant.now
@@ -11,7 +12,11 @@ const val POST_ID: Long = 1L
 
 const val POST_TITLE: String = "post title string"
 
+const val NEW_POST_TITLE: String = "new post title string"
+
 const val POST_CONTENT: String = "post content string"
+
+const val NEW_POST_CONTENT: String = "new post content string"
 
 const val POST_WRITER_ID: Long = 1L
 
@@ -24,6 +29,17 @@ val post: () -> Post = fun (): Post {
         postId = POST_ID,
         title = POST_TITLE,
         content = POST_CONTENT,
+        writerId = POST_WRITER_ID,
+        createdAt = POST_CREATED_AT,
+        updatedAt = POST_UPDATED_AT
+    )
+}
+
+val updatedPost: () -> Post = fun (): Post {
+    return Post(
+        postId = POST_ID,
+        title = NEW_POST_TITLE,
+        content = NEW_POST_CONTENT,
         writerId = POST_WRITER_ID,
         createdAt = POST_CREATED_AT,
         updatedAt = POST_UPDATED_AT
@@ -51,4 +67,24 @@ val createPostRequest: () -> CreatePostRequest = fun (): CreatePostRequest {
 
 val retrievePostRequest: () -> RetrievePostRequest = fun (): RetrievePostRequest {
     return RetrievePostRequest(POST_ID)
+}
+
+val updatedPostResponse: () -> PostResponse = fun (): PostResponse {
+    return PostResponse(
+        postId = POST_ID,
+        title = NEW_POST_TITLE,
+        content = NEW_POST_CONTENT,
+        writerId = POST_WRITER_ID,
+        createdAt = POST_CREATED_AT,
+        updatedAt = POST_UPDATED_AT
+    )
+}
+
+val updatePostRequest: () -> UpdatePostRequest = fun (): UpdatePostRequest {
+    return UpdatePostRequest(
+        postId = POST_ID,
+        newTitle = NEW_POST_TITLE,
+        newContent = NEW_POST_CONTENT,
+        writerId = POST_WRITER_ID
+    )
 }

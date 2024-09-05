@@ -3,6 +3,7 @@ package me.jun.core.guestbook.application
 import me.jun.core.guestbook.application.dto.CreatePostRequest
 import me.jun.core.guestbook.application.dto.PostResponse
 import me.jun.core.guestbook.application.dto.RetrievePostRequest
+import me.jun.core.guestbook.application.dto.UpdatePostRequest
 import me.jun.core.guestbook.application.exception.PostNotFoundException
 import me.jun.core.guestbook.domain.Post
 import me.jun.core.guestbook.domain.repository.PostRepository
@@ -25,6 +26,16 @@ class PostService(
         val post: Post = postRepository.findByPostId(request.postId)
             ?: throw PostNotFoundException.of(request.postId.toString())
         return PostResponse.of(post)
+    }
+
+    fun updatePost(request: UpdatePostRequest): PostResponse {
+        val post: Post = postRepository.findByPostId(request.postId)
+            ?: throw PostNotFoundException.of(request.postId.toString())
+
+        val updatedPost = post.updateTitle(request.newTitle)
+            .updateContent(request.newContent)
+
+        return PostResponse.of(updatedPost)
     }
 
 }

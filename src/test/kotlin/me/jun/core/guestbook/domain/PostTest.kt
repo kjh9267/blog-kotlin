@@ -21,4 +21,26 @@ class PostTest {
         assertThat(post())
             .isEqualToComparingFieldByField(expected)
     }
+
+    @Test
+    fun updateTitleTest() {
+        val expected: String = NEW_POST_TITLE
+
+        assertThat(
+            post().updateTitle("new post title string")
+                .title
+        )
+            .isEqualTo(expected)
+    }
+
+    @Test
+    fun updateContentTest() {
+        val expected: String = NEW_POST_CONTENT
+
+        assertThat(
+            post().updateContent("new post content string")
+                .content
+        )
+            .isEqualTo(expected)
+    }
 }

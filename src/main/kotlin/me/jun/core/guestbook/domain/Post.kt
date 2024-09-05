@@ -31,6 +31,16 @@ open class Post(
     open var updatedAt: Instant?
 ) {
 
+    fun updateTitle(newTitle: String): Post {
+        this.title = newTitle
+        return this
+    }
+
+    fun updateContent(newContent: String): Post {
+        this.content = newContent
+        return this
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Post) return false
