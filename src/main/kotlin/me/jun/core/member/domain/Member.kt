@@ -3,9 +3,11 @@ package me.jun.core.member.domain
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.Instant
 
 @Entity
+@EntityListeners(AuditingEntityListener::class)
 open class Member(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
