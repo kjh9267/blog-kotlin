@@ -2,6 +2,8 @@ package me.jun.core.guestbook.application
 
 import me.jun.core.guestbook.application.dto.CreatePostRequest
 import me.jun.core.guestbook.application.dto.PostResponse
+import me.jun.core.guestbook.application.dto.RetrievePostRequest
+import me.jun.core.guestbook.application.exception.PostNotFoundException
 import me.jun.core.guestbook.domain.Post
 import me.jun.core.guestbook.domain.repository.PostRepository
 import org.springframework.stereotype.Service
@@ -17,6 +19,12 @@ class PostService(
         val post: Post = request.toEntity()
         val savedPost: Post = postRepository.save(post)
         return PostResponse.of(savedPost)
+    }
+
+    fun retrievePost(request: RetrievePostRequest): PostResponse {
+        val post: Post = postRepository.findByPostId(request.postId)
+            ?: throw PostNotFoundException.of(request.postId.toString())
+        return PostResponse.of(post)
     }
 
 }
