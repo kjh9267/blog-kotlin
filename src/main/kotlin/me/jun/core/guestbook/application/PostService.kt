@@ -13,8 +13,8 @@ class PostService(
     private val postRepository: PostRepository
 ) {
 
-    fun createPost(request: CreatePostRequest): PostResponse {
-        val post: Post = request.toEntity()
+    fun createPost(request: CreatePostRequest?): PostResponse {
+        val post: Post = request!!.toEntity()
         val savedPost: Post = postRepository.save(post)
         return PostResponse.of(savedPost)
     }
