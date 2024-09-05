@@ -5,6 +5,7 @@ import me.jun.common.security.JwtProvider
 import me.jun.common.security.MemberIdExtractor
 import me.jun.common.security.exception.InvalidTokenException
 import me.jun.core.guestbook.application.PostService
+import me.jun.core.guestbook.application.exception.PostNotFoundException
 import me.jun.support.*
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
@@ -18,6 +19,7 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -165,4 +167,50 @@ class PostControllerTest {
             .andExpect(status().is4xxClientError)
             .andExpect(jsonPath("detail").exists())
     }
+
+    @Test
+    fun retrievePostTest() {
+        given(postService.retrievePost(any()))
+            .willReturn(postResponse())
+
+        mockMvc.perform(
+            get("/api/guestbook/posts/1")
+                .accept(APPLICATION_JSON)
+        )
+            .andDo(print())
+            .andExpect(status().is2xxSuccessful)
+            .andExpect(jsonPath("postId").exists())
+            .andExpect(jsonPath("title").exists())
+            .andExpect(jsonPath("content").exists())
+            .andExpect(jsonPath("writerId").exists())
+            .andExpect(jsonPath("createdAt").exists())
+            .andExpect(jsonPath("updatedAt").exists())
+    }
+
+    @Test
+    fun wrongPathVariable_retrievePostFailTest() {
+        mockMvc.perform(
+            get("/api/guestbook/posts/asdf")
+                .accept(APPLICATION_JSON)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun noPost_retrievePostFailTest() {
+        given(postService.retrievePost(any()))
+            .willThrow(PostNotFoundException.of(POST_ID.toString()))
+
+        mockMvc.perform(
+            get("/api/guestbook/posts/1")
+                .accept(APPLICATION_JSON)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+
 }

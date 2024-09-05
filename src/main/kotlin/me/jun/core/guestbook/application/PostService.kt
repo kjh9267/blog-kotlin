@@ -19,8 +19,8 @@ class PostService(
         return PostResponse.of(savedPost)
     }
 
-    fun retrievePost(request: RetrievePostRequest): PostResponse {
-        val post: Post = postRepository.findByPostId(request.postId)
+    fun retrievePost(request: RetrievePostRequest?): PostResponse {
+        val post: Post = postRepository.findByPostId(request!!.postId)
             ?: throw PostNotFoundException.of(request.postId.toString())
         return PostResponse.of(post)
     }
