@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 @Component
 @Suppress("Deprecation")
 class JwtProvider(
-    @Value("\${jwt-key}") val jwtKey: String
+    @Value("\${jwt-key}") private val jwtKey: String
 ) {
 
     fun createToken(email: String?): String {

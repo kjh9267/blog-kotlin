@@ -1,14 +1,17 @@
 package me.jun.core.member.domain.repository
 
 import me.jun.core.member.domain.Member
-import me.jun.core.member.domain.Role
-import me.jun.support.*
+import me.jun.support.EMAIL
+import me.jun.support.MEMBER_ID
+import me.jun.support.user
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
+import java.time.Instant.now
 
 @ActiveProfiles("test")
 @DataJpaTest
@@ -24,19 +27,29 @@ class MemberRepositoryTest {
         val expected: Member = user()
 
         memberRepository.save(
-            Member(
-                memberId = null,
-                name = MEMBER_NAME,
-                email = MEMBER_EMAIL,
-                password = password(),
-                role = Role.USER,
-                createdAt = MEMBER_CREATED_AT,
-                updatedAt = MEMBER_UPDATED_AT
-            )
+            user().apply {
+                this.memberId = null
+                this.createdAt = null
+                this.updatedAt = null
+            }
         )
 
-        assertThat(memberRepository.findByMemberId(MEMBER_ID))
-            .isEqualToComparingFieldByField(expected)
+        val member: Member = memberRepository.findByMemberId(MEMBER_ID)!!
+
+        assertAll(
+            {
+                assertThat(member)
+                    .isEqualToIgnoringGivenFields(expected, "createdAt", "updatedAt")
+            },
+            {
+                assertThat(member.createdAt)
+                    .isBeforeOrEqualTo(now())
+            },
+            {
+                assertThat(member.updatedAt)
+                    .isBeforeOrEqualTo(now())
+            }
+        )
     }
 
     @Test
@@ -47,20 +60,32 @@ class MemberRepositoryTest {
 
     @Test
     fun findByEmailTest() {
-        val expected: Member = Member(
-            memberId = MEMBER_ID,
-            name = MEMBER_NAME,
-            email = MEMBER_EMAIL,
-            password = password(),
-            role = Role.USER,
-            createdAt = MEMBER_CREATED_AT,
-            updatedAt = MEMBER_UPDATED_AT
+        val expected: Member = user()
+
+        memberRepository.save(
+            user().apply {
+                this.memberId = null
+                this.createdAt = null
+                this.updatedAt = null
+            }
         )
 
-        memberRepository.save(user())
+        val member: Member = memberRepository.findByEmail(EMAIL)!!
 
-        assertThat(memberRepository.findByEmail(EMAIL))
-            .isEqualToComparingFieldByField(expected)
+        assertAll(
+            {
+                assertThat(member)
+                    .isEqualToIgnoringGivenFields(expected, "createdAt", "updatedAt")
+            },
+            {
+                assertThat(member.createdAt)
+                    .isBeforeOrEqualTo(now())
+            },
+            {
+                assertThat(member.updatedAt)
+                    .isBeforeOrEqualTo(now())
+            }
+        )
     }
 
     @Test

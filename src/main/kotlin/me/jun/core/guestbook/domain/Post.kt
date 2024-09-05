@@ -1,4 +1,4 @@
-package me.jun.core.blog.domain
+package me.jun.core.guestbook.domain
 
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
@@ -6,23 +6,23 @@ import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.Instant
 
-@EntityListeners(AuditingEntityListener::class)
 @Entity
-open class Article(
+@EntityListeners(AuditingEntityListener::class)
+open class Post(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    open var articleId: Long?,
+    open var postId: Long?,
 
     @Column(nullable = false)
-    open var categoryId: Long?,
+    open var title: String,
 
-    @Embedded
-    open var articleInfo: ArticleInfo?,
+    @Column(nullable = false)
+    open var content: String,
 
     @Column(nullable = false)
     open var writerId: Long,
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     @CreatedDate
     open var createdAt: Instant?,
 
@@ -31,23 +31,26 @@ open class Article(
     open var updatedAt: Instant?
 ) {
 
-    fun updateArticleInfo(newTitle: String, newContent: String): Article {
-        articleInfo = articleInfo?.updateTitle(newTitle)
-            ?.updateContent(newContent)
+    fun updateTitle(newTitle: String): Post {
+        this.title = newTitle
+        return this
+    }
 
-        return this;
+    fun updateContent(newContent: String): Post {
+        this.content = newContent
+        return this
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is Article) return false
+        if (other !is Post) return false
 
-        if (articleId != other.articleId) return false
+        if (postId != other.postId) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return articleId?.hashCode() ?: 0
+        return postId?.hashCode() ?: 0
     }
 }

@@ -10,8 +10,8 @@ class ArticleInfoTest {
     @Test
     fun constructorTest() {
         val expected: ArticleInfo = ArticleInfo(
-            title = TITLE,
-            content = CONTENT
+            title = ARTICLE_TITLE,
+            content = ARTICLE_CONTENT
         )
 
         assertThat(articleInfo())
@@ -21,8 +21,8 @@ class ArticleInfoTest {
     @Test
     fun updateTitleTest() {
         val expected: ArticleInfo = ArticleInfo(
-            title = NEW_TITLE,
-            content = CONTENT
+            title = ARTICLE_NEW_TITLE,
+            content = ARTICLE_CONTENT
         )
 
         assertThat(articleInfo().updateTitle("new title string"))
@@ -32,8 +32,8 @@ class ArticleInfoTest {
     @Test
     fun updateContentTest() {
         val expected: ArticleInfo = ArticleInfo(
-            title = TITLE,
-            content = NEW_CONTENT
+            title = ARTICLE_TITLE,
+            content = ARTICLE_NEW_CONTENT
         )
 
         assertThat(articleInfo().updateContent("new content string"))
