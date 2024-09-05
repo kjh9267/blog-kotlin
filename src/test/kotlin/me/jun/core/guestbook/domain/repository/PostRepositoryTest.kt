@@ -1,13 +1,16 @@
 package me.jun.core.guestbook.domain.repository
 
 import me.jun.core.guestbook.domain.Post
-import me.jun.support.*
+import me.jun.support.POST_ID
+import me.jun.support.post
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
+import java.time.Instant.now
 
 @ActiveProfiles("test")
 @DataJpaTest
@@ -20,19 +23,32 @@ class PostRepositoryTest {
 
     @Test
     fun findByPostIdTest() {
-        val expected: Post = Post(
-            postId = POST_ID,
-            title = POST_TITLE,
-            content = POST_CONTENT,
-            writerId = POST_WRITER_ID,
-            createdAt = POST_CREATED_AT,
-            updatedAt = POST_UPDATED_AT
+        val expected: Post = post()
+
+        postRepository.save(
+            post().apply {
+                this.postId = null
+                this.createdAt = null
+                this.updatedAt = null
+            }
         )
 
-        postRepository.save(post())
+        val post: Post = postRepository.findByPostId(POST_ID)!!
 
-        assertThat(postRepository.findByPostId(POST_ID))
-            .isEqualToComparingFieldByField(expected)
+        assertAll(
+            {
+                assertThat(post)
+                    .isEqualToIgnoringGivenFields(expected, "createdAt", "updatedAt")
+            },
+            {
+                assertThat(post.createdAt)
+                    .isBeforeOrEqualTo(now())
+            },
+            {
+                assertThat(post.updatedAt)
+                    .isBeforeOrEqualTo(now())
+            }
+        )
     }
 
     @Test
