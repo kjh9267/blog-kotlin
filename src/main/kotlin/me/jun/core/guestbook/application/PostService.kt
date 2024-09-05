@@ -25,8 +25,8 @@ class PostService(
         return PostResponse.of(post)
     }
 
-    fun updatePost(request: UpdatePostRequest): PostResponse {
-        val post: Post = postRepository.findByPostId(request.postId)
+    fun updatePost(request: UpdatePostRequest?): PostResponse {
+        val post: Post = postRepository.findByPostId(request!!.postId)
             ?: throw PostNotFoundException.of(request.postId.toString())
 
         val updatedPost = post.updateTitle(request.newTitle)

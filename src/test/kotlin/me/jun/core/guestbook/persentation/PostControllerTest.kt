@@ -19,8 +19,7 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -212,5 +211,134 @@ class PostControllerTest {
             .andExpect(jsonPath("detail").exists())
     }
 
+    @Test
+    fun updatePostTest() {
+        val content: String = objectMapper.writeValueAsString(updatePostRequest())
 
+        given(jwtProvider.extractSubject(any()))
+            .willReturn(EMAIL)
+
+        given(memberIdExtractor.extractMemberId(any()))
+            .willReturn(MEMBER_ID)
+
+        given(postService.updatePost(any()))
+            .willReturn(updatedPostResponse())
+
+        mockMvc.perform(
+            put("/api/guestbook/posts")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .header(AUTHORIZATION, TOKEN)
+                .content(content)
+        )
+            .andDo(print())
+            .andExpect(status().is2xxSuccessful)
+            .andExpect(jsonPath("postId").exists())
+            .andExpect(jsonPath("title").exists())
+            .andExpect(jsonPath("content").exists())
+            .andExpect(jsonPath("writerId").exists())
+            .andExpect(jsonPath("createdAt").exists())
+            .andExpect(jsonPath("updatedAt").exists())
+    }
+
+    @Test
+    fun noToken_updatePostFailTest() {
+        val content: String = objectMapper.writeValueAsString(updatePostRequest())
+
+        mockMvc.perform(
+            put("/api/guestbook/posts")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .content(content)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun invalidToken_updatePostFailTest() {
+        val content: String = objectMapper.writeValueAsString(updatePostRequest())
+
+        given(jwtProvider.extractSubject(any()))
+            .willThrow(InvalidTokenException.of(TOKEN))
+
+        mockMvc.perform(
+            put("/api/guestbook/posts")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .header(AUTHORIZATION, TOKEN)
+                .content(content)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun noContent_updatePostFailTest() {
+        given(jwtProvider.extractSubject(any()))
+            .willReturn(EMAIL)
+
+        given(memberIdExtractor.extractMemberId(any()))
+            .willReturn(MEMBER_ID)
+
+        mockMvc.perform(
+            put("/api/guestbook/posts")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .header(AUTHORIZATION, TOKEN)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun wrongContent_updatePostFailTest() {
+        val wrongContent: String = objectMapper.writeValueAsString(
+            updatePostRequest().apply {
+                this.postId = 0L
+            }
+        )
+
+        given(jwtProvider.extractSubject(any()))
+            .willReturn(EMAIL)
+
+        given(memberIdExtractor.extractMemberId(any()))
+            .willReturn(MEMBER_ID)
+
+        mockMvc.perform(
+            put("/api/guestbook/posts")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .header(AUTHORIZATION, TOKEN)
+                .content(wrongContent)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun unknownWriter_updatePostFailTest() {
+        val content: String = objectMapper.writeValueAsString(updatePostRequest())
+
+        given(jwtProvider.extractSubject(any()))
+            .willReturn(EMAIL)
+
+        given(memberIdExtractor.extractMemberId(any()))
+            .willThrow(InvalidTokenException.of(TOKEN))
+
+        mockMvc.perform(
+            put("/api/guestbook/posts")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .header(AUTHORIZATION, TOKEN)
+                .content(content)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
 }

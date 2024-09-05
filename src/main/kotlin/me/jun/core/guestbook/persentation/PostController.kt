@@ -6,6 +6,7 @@ import me.jun.core.guestbook.application.PostService
 import me.jun.core.guestbook.application.dto.CreatePostRequest
 import me.jun.core.guestbook.application.dto.PostResponse
 import me.jun.core.guestbook.application.dto.RetrievePostRequest
+import me.jun.core.guestbook.application.dto.UpdatePostRequest
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -39,6 +40,20 @@ class PostController(
     ): ResponseEntity<PostResponse> {
         val request: RetrievePostRequest = RetrievePostRequest(postId)
         val postResponse: PostResponse = postService.retrievePost(request)
+
+        return ResponseEntity.ok()
+            .body(postResponse)
+    }
+
+    @PutMapping(
+        consumes = [APPLICATION_JSON_VALUE],
+        produces = [APPLICATION_JSON_VALUE]
+    )
+    fun updatePost(
+        @RequestBody @Valid request: UpdatePostRequest,
+        @WriterId writerId: Long
+        ): ResponseEntity<PostResponse> {
+        val postResponse: PostResponse = postService.updatePost(request)
 
         return ResponseEntity.ok()
             .body(postResponse)
