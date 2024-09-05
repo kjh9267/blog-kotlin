@@ -1,5 +1,7 @@
 package me.jun.support
 
+import me.jun.core.guestbook.application.dto.CreatePostRequest
+import me.jun.core.guestbook.application.dto.PostResponse
 import me.jun.core.guestbook.domain.Post
 import java.time.Instant
 import java.time.Instant.now
@@ -24,5 +26,24 @@ val post: () -> Post = fun (): Post {
         writerId = POST_WRITER_ID,
         createdAt = POST_CREATED_AT,
         updatedAt = POST_UPDATED_AT
+    )
+}
+
+val postResponse: () -> PostResponse = fun (): PostResponse {
+    return PostResponse(
+        postId = POST_ID,
+        title = POST_TITLE,
+        content = POST_CONTENT,
+        writerId = POST_WRITER_ID,
+        createdAt = POST_CREATED_AT,
+        updatedAt = POST_UPDATED_AT
+    )
+}
+
+val createPostRequest: () -> CreatePostRequest = fun (): CreatePostRequest {
+    return CreatePostRequest(
+        title = POST_TITLE,
+        content = POST_CONTENT,
+        writerId = POST_WRITER_ID
     )
 }

@@ -24,11 +24,11 @@ open class Post(
 
     @Column(nullable = false)
     @CreatedDate
-    open var createdAt: Instant,
+    open var createdAt: Instant?,
 
     @Column(nullable = false)
     @LastModifiedDate
-    open var updatedAt: Instant
+    open var updatedAt: Instant?
 ) {
 
     override fun equals(other: Any?): Boolean {
