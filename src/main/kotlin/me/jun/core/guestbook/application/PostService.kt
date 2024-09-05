@@ -35,7 +35,7 @@ class PostService(
         return PostResponse.of(updatedPost)
     }
 
-    fun deletePost(request: DeletePostRequest): Unit {
-        postRepository.deleteById(request.postId)
+    fun deletePost(request: DeletePostRequest?): Unit {
+        postRepository.deleteById(request!!.postId)
     }
 }

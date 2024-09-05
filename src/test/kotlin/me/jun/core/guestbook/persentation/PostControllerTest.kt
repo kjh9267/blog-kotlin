@@ -9,6 +9,7 @@ import me.jun.core.guestbook.application.exception.PostNotFoundException
 import me.jun.support.*
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
+import org.mockito.BDDMockito.doNothing
 import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -336,6 +337,78 @@ class PostControllerTest {
                 .contentType(APPLICATION_JSON)
                 .header(AUTHORIZATION, TOKEN)
                 .content(content)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun deletePostTest() {
+        given(jwtProvider.extractSubject(any()))
+            .willReturn(EMAIL)
+
+        given(memberIdExtractor.extractMemberId(any()))
+            .willReturn(MEMBER_ID)
+
+        doNothing()
+            .`when`(postService)
+            .deletePost(any())
+
+        mockMvc.perform(
+            delete("/api/guestbook/posts/1")
+                .header(AUTHORIZATION, TOKEN)
+        )
+            .andDo(print())
+            .andExpect(status().is2xxSuccessful)
+    }
+
+    @Test
+    fun wrongPathVariable_deletePostFailTest() {
+        mockMvc.perform(
+            delete("/api/guestbook/posts/asdf")
+                .header(AUTHORIZATION, TOKEN)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun noToken_deletePostFailTest() {
+        mockMvc.perform(
+            delete("/api/guestbook/posts/1")
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun invalidToken_deletePostFailTest() {
+        given(jwtProvider.extractSubject(any()))
+            .willThrow(InvalidTokenException.of(TOKEN))
+
+        mockMvc.perform(
+            delete("/api/guestbook/posts/1")
+                .header(AUTHORIZATION, TOKEN)
+        )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun unknownWriter_deletePostFailTest() {
+        given(jwtProvider.extractSubject(any()))
+            .willReturn(EMAIL)
+
+        given(memberIdExtractor.extractMemberId(any()))
+            .willThrow(InvalidTokenException.of(TOKEN))
+
+        mockMvc.perform(
+            delete("/api/guestbook/posts/1")
+                .header(AUTHORIZATION, TOKEN)
         )
             .andDo(print())
             .andExpect(status().is4xxClientError)

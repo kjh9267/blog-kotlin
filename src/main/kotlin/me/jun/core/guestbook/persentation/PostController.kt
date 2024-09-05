@@ -3,10 +3,7 @@ package me.jun.core.guestbook.persentation
 import jakarta.validation.Valid
 import me.jun.common.security.WriterId
 import me.jun.core.guestbook.application.PostService
-import me.jun.core.guestbook.application.dto.CreatePostRequest
-import me.jun.core.guestbook.application.dto.PostResponse
-import me.jun.core.guestbook.application.dto.RetrievePostRequest
-import me.jun.core.guestbook.application.dto.UpdatePostRequest
+import me.jun.core.guestbook.application.dto.*
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -57,5 +54,17 @@ class PostController(
 
         return ResponseEntity.ok()
             .body(postResponse)
+    }
+
+    @DeleteMapping(value = ["/{postId}"])
+    fun deletePost(
+        @PathVariable postId: Long,
+        @WriterId writerId: Long
+        ): ResponseEntity<Void> {
+        val request: DeletePostRequest = DeletePostRequest(postId)
+        postService.deletePost(request)
+
+        return ResponseEntity.noContent()
+            .build()
     }
 }
