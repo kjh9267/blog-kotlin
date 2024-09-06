@@ -414,4 +414,19 @@ class PostControllerTest {
             .andExpect(status().is4xxClientError)
             .andExpect(jsonPath("detail").exists())
     }
+
+    @Test
+    fun retrievePagedPostsTest() {
+        given(postService.retrievePagedPosts(any()))
+            .willReturn(pagedPostResponse())
+
+        mockMvc.perform(
+            get("/api/guestbook/posts/query?page=0&size=10")
+                .accept(APPLICATION_JSON)
+        )
+            .andDo(print())
+            .andExpect(status().is2xxSuccessful)
+            .andExpect(jsonPath("pageResponses").exists())
+            .andExpect(jsonPath("pageResponses.size").exists())
+    }
 }

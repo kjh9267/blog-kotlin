@@ -4,6 +4,7 @@ import jakarta.validation.Valid
 import me.jun.common.security.WriterId
 import me.jun.core.guestbook.application.PostService
 import me.jun.core.guestbook.application.dto.*
+import org.springframework.data.domain.PageRequest
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -66,5 +67,18 @@ class PostController(
 
         return ResponseEntity.noContent()
             .build()
+    }
+
+    @GetMapping(
+        value = ["/query"],
+        produces = [APPLICATION_JSON_VALUE]
+    )
+    fun retrievePagedPosts(
+        @RequestParam("page") page: Int,
+        @RequestParam("size") size: Int
+    ): ResponseEntity<PagedPostResponse> {
+        val pagedPostResponse = postService.retrievePagedPosts(PageRequest.of(page, size))
+        return ResponseEntity.ok()
+            .body(pagedPostResponse)
     }
 }
