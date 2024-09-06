@@ -61,7 +61,7 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    fun findAllTest() {
+    fun findAllByTest() {
         for (id in 1..20) {
             articleRepository.save(
                 article().apply {
@@ -70,12 +70,12 @@ class ArticleRepositoryTest {
             )
         }
 
-        val page: Page<Article> = articleRepository.findAll(PageRequest.of(1, 10))
+        val page: Page<Article> = articleRepository.findAllBy(PageRequest.of(1, 10))
         assertThat(page.numberOfElements).isEqualTo(10)
     }
 
     @Test
-    fun findAllFailTest() {
+    fun findAllByFailTest() {
         for (id in 1..10) {
             articleRepository.save(
                 article().apply {
@@ -84,7 +84,7 @@ class ArticleRepositoryTest {
             )
         }
 
-        val page: Page<Article> = articleRepository.findAll(PageRequest.of(1, 10))
+        val page: Page<Article> = articleRepository.findAllBy(PageRequest.of(1, 10))
         assertThat(page.isEmpty).isTrue()
     }
 
