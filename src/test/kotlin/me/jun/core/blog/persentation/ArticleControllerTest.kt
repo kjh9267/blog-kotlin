@@ -373,4 +373,19 @@ class ArticleControllerTest {
             .andExpect(status().is4xxClientError)
             .andExpect(jsonPath("detail").exists())
     }
+
+    @Test
+    fun retrievePagedArticlesTest() {
+        given(articleService.retrievePagedArticles(any()))
+            .willReturn(pagedArticleResponse())
+
+        mockMvc.perform(
+            get("/api/blog/articles/query?page=0&size=10")
+                .accept(APPLICATION_JSON)
+        )
+            .andDo(print())
+            .andExpect(status().is2xxSuccessful)
+            .andExpect(jsonPath("articleResponses").exists())
+            .andExpect(jsonPath("articleResponses.size").exists())
+    }
 }
