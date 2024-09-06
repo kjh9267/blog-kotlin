@@ -1,5 +1,6 @@
 package me.jun.core.guestbook.application
 
+import me.jun.core.guestbook.application.dto.PagedPostResponse
 import me.jun.core.guestbook.application.dto.PostResponse
 import me.jun.core.guestbook.application.exception.PostNotFoundException
 import me.jun.core.guestbook.domain.repository.PostRepository
@@ -13,6 +14,7 @@ import org.mockito.BDDMockito.*
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
+import org.springframework.data.domain.PageRequest
 
 @ExtendWith(MockitoExtension::class)
 @Suppress("Deprecation")
@@ -95,5 +97,16 @@ class PostServiceTest {
 
         verify(postRepository)
             .deleteById(POST_ID)
+    }
+
+    @Test
+    fun retrievePagedPostsTest() {
+        val expected: PagedPostResponse = pagedPostResponse()
+
+        given(postRepository.findAllBy(any()))
+            .willReturn(pagedPosts())
+
+        assertThat(postService.retrievePagedPosts(PageRequest.of(0, 10)))
+            .isEqualToComparingFieldByField(expected)
     }
 }

@@ -105,3 +105,7 @@ val postList: () -> List<Post> = fun (): List<Post> {
 val pagedPosts: () -> Page<Post> = fun (): Page<Post> {
     return PageImpl(postList())
 }
+
+val pagedPostResponse: () -> PagedPostResponse = fun (): PagedPostResponse {
+    return PagedPostResponse.of(pagedPosts())
+}
