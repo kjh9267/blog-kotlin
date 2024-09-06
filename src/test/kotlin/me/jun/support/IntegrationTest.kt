@@ -46,8 +46,8 @@ abstract class IntegrationTest {
         println(gson.toJson(element))
     }
 
-    fun login(): String {
-        val token: String = given().log().all()
+    fun login(): Unit {
+        token = given().log().all()
             .port(port!!)
             .accept(APPLICATION_JSON_VALUE)
             .contentType(APPLICATION_JSON_VALUE)
@@ -62,6 +62,6 @@ abstract class IntegrationTest {
             .extract()
             .path("token")
 
-        return token
+        println(token)
     }
 }

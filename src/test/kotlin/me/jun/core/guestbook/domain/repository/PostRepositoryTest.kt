@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import java.time.Instant.now
@@ -55,5 +57,23 @@ class PostRepositoryTest {
     fun noPost_findByPostIdFailTest() {
         assertThat(postRepository.findByPostId(POST_ID))
             .isNull()
+    }
+
+    @Test
+    fun findAllByTest() {
+        val expected: Long = 10L
+
+        for (id in 1..20) {
+            postRepository.save(
+                post().apply {
+                    this.postId = id.toLong()
+                }
+            )
+        }
+
+        val page: Page<Post> = postRepository.findAllBy(PageRequest.of(0, 10))
+
+        assertThat(page.numberOfElements)
+            .isEqualTo(expected)
     }
 }

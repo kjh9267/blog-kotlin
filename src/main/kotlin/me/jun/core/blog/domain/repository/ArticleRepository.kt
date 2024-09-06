@@ -9,5 +9,7 @@ interface ArticleRepository: JpaRepository<Article, Long> {
 
     fun findByArticleId(articleId: Long?): Article?
 
+    fun findAllBy(pageable: Pageable?): Page<Article>
+
     fun findAllByCategoryId(categoryId: Long?, pageable: Pageable): Page<Article>
 }

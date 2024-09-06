@@ -38,6 +38,8 @@ open class Article(
         return this;
     }
 
+
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Article) return false
@@ -49,5 +51,9 @@ open class Article(
 
     override fun hashCode(): Int {
         return articleId?.hashCode() ?: 0
+    }
+
+    override fun toString(): String {
+        return "Article(articleId=$articleId, categoryId=$categoryId, articleInfo=$articleInfo, writerId=$writerId, createdAt=$createdAt, updatedAt=$updatedAt)"
     }
 }

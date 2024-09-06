@@ -7,6 +7,8 @@ import me.jun.core.blog.domain.Article
 import me.jun.core.blog.domain.Category
 import me.jun.core.blog.domain.repository.ArticleRepository
 import me.jun.core.blog.domain.service.CategoryMatchingService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
@@ -20,8 +22,8 @@ class ArticleService(
     fun createArticle(request: CreateArticleRequest?): ArticleResponse {
         val article: Article = request!!.toEntity()
         val category: Category = categoryService.createCategoryOrElseGet(request.categoryName)
+        categoryMatchingService.matchCategory(article, category)
         val savedArticle: Article = articleRepository.save(article)
-        categoryMatchingService.matchCategory(savedArticle, category)
 
         return ArticleResponse.of(savedArticle)
     }
@@ -44,5 +46,10 @@ class ArticleService(
 
     fun deleteArticle(request: DeleteArticleRequest?): Unit {
         articleRepository.deleteById(request!!.articleId)
+    }
+
+    fun retrievePagedArticles(request: Pageable?): PagedArticleResponse {
+        val pagedArticles: Page<Article> = articleRepository.findAllBy(request)
+        return PagedArticleResponse.of(pagedArticles)
     }
 }

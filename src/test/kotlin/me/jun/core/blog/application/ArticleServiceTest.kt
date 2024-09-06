@@ -1,6 +1,7 @@
 package me.jun.core.blog.application
 
 import me.jun.core.blog.application.dto.ArticleResponse
+import me.jun.core.blog.application.dto.PagedArticleResponse
 import me.jun.core.blog.application.exception.ArticleNotFoundException
 import me.jun.core.blog.domain.Article
 import me.jun.core.blog.domain.Category
@@ -19,6 +20,7 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
+import org.springframework.data.domain.PageRequest
 
 @ExtendWith(MockitoExtension::class)
 @Suppress("Deprecation")
@@ -53,19 +55,19 @@ class ArticleServiceTest {
         given(categoryService.createCategoryOrElseGet(any()))
             .willReturn(category)
 
-        given(articleRepository.save(any()))
-            .willReturn(article)
-
         doNothing()
             .`when`(categoryMatchingService)
-            .matchCategory(article, category)
+            .matchCategory(any(), any())
+
+        given(articleRepository.save(any()))
+            .willReturn(article)
 
         assertAll(
             { assertThat(articleService.createArticle(createArticleRequest()))
                 .isEqualToComparingFieldByField(expected) },
             { verify(categoryMatchingService)
                 .matchCategory(
-                    article = article,
+                    article = article.apply { this.articleId = null },
                     category = category
                 )
             }
@@ -124,5 +126,16 @@ class ArticleServiceTest {
 
         verify(articleRepository)
             .deleteById(ARTICLE_ID)
+    }
+
+    @Test
+    fun retrievePagedArticlesTest() {
+        val expected: PagedArticleResponse = pagedArticleResponse()
+
+        given(articleRepository.findAllBy(any()))
+            .willReturn(pagedArticles())
+
+        assertThat(articleService.retrievePagedArticles(PageRequest.of(0, 10)))
+            .isEqualToComparingFieldByField(expected)
     }
 }

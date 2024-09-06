@@ -3,6 +3,8 @@ package me.jun.support
 import me.jun.core.blog.application.dto.*
 import me.jun.core.blog.domain.Article
 import me.jun.core.blog.domain.ArticleInfo
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import java.time.Instant
 import java.time.Instant.now
 
@@ -90,4 +92,20 @@ val updateArticleRequest: () -> UpdateArticleRequest = fun (): UpdateArticleRequ
 
 val deleteArticleRequest: () -> DeleteArticleRequest = fun (): DeleteArticleRequest {
     return DeleteArticleRequest(ARTICLE_ID)
+}
+
+val articleList: () -> List<Article> = fun (): List<Article> {
+    return (1..10).map {
+        article().apply {
+            this.articleId = it.toLong()
+        }
+    }
+}
+
+val pagedArticles: () -> Page<Article> = fun (): Page<Article> {
+    return PageImpl(articleList())
+}
+
+val pagedArticleResponse: () -> PagedArticleResponse = fun (): PagedArticleResponse {
+    return PagedArticleResponse.of(pagedArticles())
 }

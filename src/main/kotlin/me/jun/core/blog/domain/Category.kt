@@ -25,6 +25,8 @@ open class Category(
         return this
     }
 
+
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Category) return false
@@ -36,5 +38,9 @@ open class Category(
 
     override fun hashCode(): Int {
         return categoryId?.hashCode() ?: 0
+    }
+
+    override fun toString(): String {
+        return "Category(categoryId=$categoryId, name='$name', mappedArticleCount=$mappedArticleCount)"
     }
 }

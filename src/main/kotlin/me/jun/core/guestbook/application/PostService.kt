@@ -4,6 +4,8 @@ import me.jun.core.guestbook.application.dto.*
 import me.jun.core.guestbook.application.exception.PostNotFoundException
 import me.jun.core.guestbook.domain.Post
 import me.jun.core.guestbook.domain.repository.PostRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -37,5 +39,10 @@ class PostService(
 
     fun deletePost(request: DeletePostRequest?): Unit {
         postRepository.deleteById(request!!.postId)
+    }
+
+    fun retrievePagedPosts(pageable: Pageable?): PagedPostResponse {
+        val pagedPosts: Page<Post> = postRepository.findAllBy(pageable)
+        return PagedPostResponse.of(pagedPosts)
     }
 }
