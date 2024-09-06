@@ -20,8 +20,8 @@ class ArticleService(
     fun createArticle(request: CreateArticleRequest?): ArticleResponse {
         val article: Article = request!!.toEntity()
         val category: Category = categoryService.createCategoryOrElseGet(request.categoryName)
+        categoryMatchingService.matchCategory(article, category)
         val savedArticle: Article = articleRepository.save(article)
-        categoryMatchingService.matchCategory(savedArticle, category)
 
         return ArticleResponse.of(savedArticle)
     }

@@ -53,19 +53,19 @@ class ArticleServiceTest {
         given(categoryService.createCategoryOrElseGet(any()))
             .willReturn(category)
 
-        given(articleRepository.save(any()))
-            .willReturn(article)
-
         doNothing()
             .`when`(categoryMatchingService)
-            .matchCategory(article, category)
+            .matchCategory(any(), any())
+
+        given(articleRepository.save(any()))
+            .willReturn(article)
 
         assertAll(
             { assertThat(articleService.createArticle(createArticleRequest()))
                 .isEqualToComparingFieldByField(expected) },
             { verify(categoryMatchingService)
                 .matchCategory(
-                    article = article,
+                    article = article.apply { this.articleId = null },
                     category = category
                 )
             }
