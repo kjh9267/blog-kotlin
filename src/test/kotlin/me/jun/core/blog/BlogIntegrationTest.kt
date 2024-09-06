@@ -9,6 +9,7 @@ import me.jun.support.updateArticleRequest
 import org.hamcrest.Matchers.hasKey
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpHeaders.AUTHORIZATION
+import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
@@ -21,6 +22,7 @@ class BlogIntegrationTest: IntegrationTest() {
         createArticle()
         retrieveArticle(1L)
         updateArticle()
+        deleteArticle(1L)
     }
 
     private fun createArticle() {
@@ -94,6 +96,24 @@ class BlogIntegrationTest: IntegrationTest() {
             .assertThat().body("$") { hasKey("writerId") }
             .assertThat().body("$") { hasKey("createdAt") }
             .assertThat().body("$") { hasKey("updatedAt") }
+            .extract()
+            .asString()
+
+        val element: JsonElement = JsonParser.parseString(response)
+        println(gson.toJson(element))
+    }
+
+    private fun deleteArticle(id: Long) {
+        val response: String = given()
+            .log().all()
+            .port(port!!)
+            .header(AUTHORIZATION, token)
+
+            .`when`()
+            .delete("/api/blog/articles/$id")
+
+            .then()
+            .statusCode(NO_CONTENT.value())
             .extract()
             .asString()
 
