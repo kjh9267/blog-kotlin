@@ -2,6 +2,8 @@ package me.jun.support
 
 import me.jun.core.guestbook.application.dto.*
 import me.jun.core.guestbook.domain.Post
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import java.time.Instant
 import java.time.Instant.now
 
@@ -90,4 +92,16 @@ val deletePostRequest: () -> DeletePostRequest = fun (): DeletePostRequest {
     return DeletePostRequest(
         postId = POST_ID
     )
+}
+
+val postList: () -> List<Post> = fun (): List<Post> {
+    return (1..10).map {
+        post().apply {
+            this.postId = it.toLong()
+        }
+    }
+}
+
+val pagedPosts: () -> Page<Post> = fun (): Page<Post> {
+    return PageImpl(postList())
 }
