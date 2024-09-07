@@ -2,6 +2,9 @@ package me.jun.support
 
 import me.jun.core.guestbook.application.dto.*
 import me.jun.core.guestbook.domain.Post
+import me.jun.core.guestbook.domain.PostCount
+import me.jun.core.guestbook.domain.PostInfo
+import me.jun.core.guestbook.domain.Writer
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import java.time.Instant
@@ -19,6 +22,12 @@ const val NEW_POST_CONTENT: String = "new post content string"
 
 const val POST_WRITER_ID: Long = 1L
 
+const val POST_COUNT_ID: Long = 1L
+
+const val POST_COUNT_VALUE: Long = 0L
+
+const val VERSION: Long = 0L
+
 val POST_CREATED_AT: Instant = now()
 
 val POST_UPDATED_AT: Instant = now()
@@ -26,20 +35,40 @@ val POST_UPDATED_AT: Instant = now()
 val post: () -> Post = fun (): Post {
     return Post(
         postId = POST_ID,
-        title = POST_TITLE,
-        content = POST_CONTENT,
-        writerId = POST_WRITER_ID,
+        postInfo = postInfo(),
+        writer = postWriter(),
         createdAt = POST_CREATED_AT,
         updatedAt = POST_UPDATED_AT
+    )
+}
+
+val postWriter: () -> Writer = fun (): Writer {
+    return Writer(
+        value = POST_WRITER_ID
+    )
+}
+
+val postInfo: () -> PostInfo = fun (): PostInfo {
+    return PostInfo(
+        title = POST_TITLE,
+        content = POST_CONTENT
+    )
+}
+
+val postCount: () -> PostCount = fun (): PostCount {
+    return PostCount(
+        postCountId = POST_COUNT_ID,
+        value = POST_COUNT_VALUE,
+        postId = POST_ID,
+        version = VERSION
     )
 }
 
 val updatedPost: () -> Post = fun (): Post {
     return Post(
         postId = POST_ID,
-        title = NEW_POST_TITLE,
-        content = NEW_POST_CONTENT,
-        writerId = POST_WRITER_ID,
+        postInfo = postInfo(),
+        writer = postWriter(),
         createdAt = POST_CREATED_AT,
         updatedAt = POST_UPDATED_AT
     )

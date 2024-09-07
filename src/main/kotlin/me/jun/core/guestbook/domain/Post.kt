@@ -13,14 +13,11 @@ open class Post(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     open var postId: Long?,
 
-    @Column(nullable = false)
-    open var title: String,
+    @Embedded
+    open var postInfo: PostInfo,
 
-    @Column(nullable = false)
-    open var content: String,
-
-    @Column(nullable = false)
-    open var writerId: Long,
+    @Embedded
+    open var writer: Writer,
 
     @Column(nullable = false)
     @CreatedDate
@@ -31,13 +28,10 @@ open class Post(
     open var updatedAt: Instant?
 ) {
 
-    fun updateTitle(newTitle: String): Post {
-        this.title = newTitle
-        return this
-    }
+    fun updatePostInfo(newTitle: String, newContent: String): Post {
+        this.postInfo = postInfo.updateTitle(newTitle)
+            .updateContent(newContent)
 
-    fun updateContent(newContent: String): Post {
-        this.content = newContent
         return this
     }
 

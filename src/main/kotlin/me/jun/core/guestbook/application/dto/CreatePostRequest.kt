@@ -2,6 +2,8 @@ package me.jun.core.guestbook.application.dto
 
 import jakarta.validation.constraints.NotBlank
 import me.jun.core.guestbook.domain.Post
+import me.jun.core.guestbook.domain.PostInfo
+import me.jun.core.guestbook.domain.Writer
 
 data class CreatePostRequest(
     @field:NotBlank
@@ -14,9 +16,11 @@ data class CreatePostRequest(
     fun toEntity(): Post {
         return Post(
             postId = null,
-            title = title,
-            content = content,
-            writerId = writerId,
+            postInfo = PostInfo(
+                title = title,
+                content = content
+            ),
+            writer = Writer(writerId),
             createdAt = null,
             updatedAt = null
         )

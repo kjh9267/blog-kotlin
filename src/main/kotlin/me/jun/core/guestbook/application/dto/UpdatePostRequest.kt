@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
 import me.jun.core.guestbook.domain.Post
+import me.jun.core.guestbook.domain.PostInfo
+import me.jun.core.guestbook.domain.Writer
 
 data class UpdatePostRequest(
     @field:NotNull
@@ -19,9 +21,11 @@ data class UpdatePostRequest(
     fun toEntity(): Post {
         return Post(
             postId = postId,
-            title = newTitle,
-            content = newContent,
-            writerId = writerId,
+            postInfo = PostInfo(
+                title = newTitle,
+                content = newContent
+            ),
+            writer = Writer(writerId),
             createdAt = null,
             updatedAt = null
         )

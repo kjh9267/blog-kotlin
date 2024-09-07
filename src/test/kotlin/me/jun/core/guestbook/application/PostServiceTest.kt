@@ -25,9 +25,15 @@ class PostServiceTest {
     @Mock
     private lateinit var postRepository: PostRepository
 
+    @Mock
+    private lateinit var postCountService: PostCountService
+
     @BeforeEach
     fun setUp() {
-        postService = PostService(postRepository)
+        postService = PostService(
+            postRepository = postRepository,
+            postCountService = postCountService
+        )
     }
 
     @Test
@@ -36,6 +42,9 @@ class PostServiceTest {
 
         given(postRepository.save(any()))
             .willReturn(post())
+
+        given(postCountService.createPostCount(any()))
+            .willReturn(postCount())
 
         assertThat(postService.createPost(createPostRequest()))
             .isEqualToComparingFieldByField(expected)
@@ -47,6 +56,9 @@ class PostServiceTest {
 
         given(postRepository.findByPostId(any()))
             .willReturn(post())
+
+        given(postCountService.incrementPostCount(any()))
+            .willReturn(POST_COUNT_VALUE + 1)
 
         assertThat(postService.retrievePost(retrievePostRequest()))
             .isEqualToComparingFieldByField(expected)

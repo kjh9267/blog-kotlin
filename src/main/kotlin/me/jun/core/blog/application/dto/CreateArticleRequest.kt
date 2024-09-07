@@ -3,6 +3,7 @@ package me.jun.core.blog.application.dto
 import jakarta.validation.constraints.NotBlank
 import me.jun.core.blog.domain.Article
 import me.jun.core.blog.domain.ArticleInfo
+import me.jun.core.blog.domain.Writer
 
 data class CreateArticleRequest(
     @field:NotBlank
@@ -19,7 +20,7 @@ data class CreateArticleRequest(
             articleId = null,
             categoryId = null,
             articleInfo = ArticleInfo(title, content),
-            writerId = writerId!!,
+            writer = Writer(writerId!!),
             createdAt = null,
             updatedAt = null
         )

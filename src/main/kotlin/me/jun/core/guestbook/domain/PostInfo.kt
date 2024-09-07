@@ -1,32 +1,30 @@
-package me.jun.core.blog.domain
+package me.jun.core.guestbook.domain
 
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 
 @Embeddable
-open class ArticleInfo(
+open class PostInfo(
     @Column(nullable = false)
-    open var title: String,
+    var title: String,
 
     @Column(nullable = false)
-    open var content: String
+    var content: String
 ) {
 
-    fun updateTitle(newTitle: String?): ArticleInfo {
+    fun updateTitle(newTitle: String?): PostInfo {
         this.title = newTitle!!
-        return this;
+        return this
     }
 
-    fun updateContent(newContent: String?): ArticleInfo {
+    fun updateContent(newContent: String?): PostInfo {
         this.content = newContent!!
-        return this;
+        return this
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as ArticleInfo
+        if (other !is PostInfo) return false
 
         if (title != other.title) return false
         if (content != other.content) return false
@@ -38,5 +36,9 @@ open class ArticleInfo(
         var result = title.hashCode()
         result = 31 * result + content.hashCode()
         return result
+    }
+
+    override fun toString(): String {
+        return "PostInfo(title='$title', content='$content')"
     }
 }

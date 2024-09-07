@@ -3,6 +3,7 @@ package me.jun.support
 import me.jun.core.blog.application.dto.*
 import me.jun.core.blog.domain.Article
 import me.jun.core.blog.domain.ArticleInfo
+import me.jun.core.blog.domain.Writer
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import java.time.Instant
@@ -29,10 +30,14 @@ val article: () -> Article = fun (): Article {
         articleId = ARTICLE_ID,
         categoryId = CATEGORY_ID,
         articleInfo = articleInfo(),
-        writerId = ARTICLE_WRITER_ID,
+        writer = articleWriter(),
         createdAt = ARTICLE_CREATED_AT,
         updatedAt = ARTICLE_UPDATED_AT
     )
+}
+
+val articleWriter: () -> Writer = fun (): Writer {
+    return Writer(POST_WRITER_ID)
 }
 
 val articleInfo: () -> ArticleInfo = fun (): ArticleInfo {
@@ -47,7 +52,7 @@ val updatedArticle: () -> Article = fun (): Article {
         articleId = ARTICLE_ID,
         categoryId = CATEGORY_ID,
         articleInfo = updatedArticleInfo(),
-        writerId = ARTICLE_WRITER_ID,
+        writer = articleWriter(),
         createdAt = ARTICLE_CREATED_AT,
         updatedAt = ARTICLE_UPDATED_AT
     )
