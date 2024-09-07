@@ -12,18 +12,22 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class PostService(
-    private val postRepository: PostRepository
+    private val postRepository: PostRepository,
+    private val postCountService: PostCountService
 ) {
 
     fun createPost(request: CreatePostRequest?): PostResponse {
         val post: Post = request!!.toEntity()
         val savedPost: Post = postRepository.save(post)
+        postCountService.createPostCount(savedPost.postId)
         return PostResponse.of(savedPost)
     }
 
     fun retrievePost(request: RetrievePostRequest?): PostResponse {
         val post: Post = postRepository.findByPostId(request!!.postId)
             ?: throw PostNotFoundException.of(request.postId.toString())
+        postCountService.incrementPostCount(post.postId)
+
         return PostResponse.of(post)
     }
 
