@@ -15,7 +15,7 @@ open class PostCount(
     open var postId: Long,
 
     @Version
-    open var version: Long
+    open var version: Long?
 ) {
 
     fun increment(): PostCount {
