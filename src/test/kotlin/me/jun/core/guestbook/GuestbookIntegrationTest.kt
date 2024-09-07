@@ -5,6 +5,7 @@ import com.google.gson.JsonParser
 import io.restassured.RestAssured.given
 import me.jun.support.IntegrationTest
 import me.jun.support.createPostRequest
+import me.jun.support.updatePostRequest
 import org.hamcrest.Matchers.hasKey
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpHeaders.AUTHORIZATION
@@ -19,6 +20,7 @@ class GuestbookIntegrationTest: IntegrationTest() {
         login()
         createPost()
         retrievePost(1L)
+        updatePost()
     }
 
     private fun createPost() {
@@ -56,6 +58,33 @@ class GuestbookIntegrationTest: IntegrationTest() {
 
             .`when`()
             .get("/api/guestbook/posts/$id")
+
+            .then()
+            .statusCode(OK.value())
+            .assertThat().body("$") { hasKey("postId") }
+            .assertThat().body("$") { hasKey("title") }
+            .assertThat().body("$") { hasKey("content") }
+            .assertThat().body("$") { hasKey("writerId") }
+            .assertThat().body("$") { hasKey("createdAt") }
+            .assertThat().body("$") { hasKey("updatedAt") }
+            .extract()
+            .asString()
+
+        val element: JsonElement = JsonParser.parseString(response)
+        println(gson.toJson(element))
+    }
+
+    private fun updatePost() {
+        val response: String = given()
+            .log().all()
+            .port(port!!)
+            .accept(APPLICATION_JSON_VALUE)
+            .contentType(APPLICATION_JSON_VALUE)
+            .header(AUTHORIZATION, token)
+            .body(updatePostRequest())
+
+            .`when`()
+            .put("/api/guestbook/posts")
 
             .then()
             .statusCode(OK.value())
