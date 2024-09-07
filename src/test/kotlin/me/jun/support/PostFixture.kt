@@ -2,6 +2,7 @@ package me.jun.support
 
 import me.jun.core.guestbook.application.dto.*
 import me.jun.core.guestbook.domain.Post
+import me.jun.core.guestbook.domain.PostCount
 import me.jun.core.guestbook.domain.PostInfo
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -19,6 +20,12 @@ const val POST_CONTENT: String = "post content string"
 const val NEW_POST_CONTENT: String = "new post content string"
 
 const val POST_WRITER_ID: Long = 1L
+
+const val POST_COUNT_ID: Long = 1L
+
+const val POST_COUNT_VALUE: Long = 0L
+
+const val VERSION: Long = 0L
 
 val POST_CREATED_AT: Instant = now()
 
@@ -38,6 +45,15 @@ val postInfo: () -> PostInfo = fun (): PostInfo {
     return PostInfo(
         title = POST_TITLE,
         content = POST_CONTENT
+    )
+}
+
+val postCount: () -> PostCount = fun (): PostCount {
+    return PostCount(
+        postCountId = POST_COUNT_ID,
+        value = POST_COUNT_VALUE,
+        postId = POST_ID,
+        version = VERSION
     )
 }
 
