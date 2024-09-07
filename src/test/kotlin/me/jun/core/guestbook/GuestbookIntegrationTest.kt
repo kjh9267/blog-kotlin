@@ -18,6 +18,7 @@ class GuestbookIntegrationTest: IntegrationTest() {
         register()
         login()
         createPost()
+        retrievePost(1L)
     }
 
     private fun createPost() {
@@ -31,6 +32,30 @@ class GuestbookIntegrationTest: IntegrationTest() {
 
             .`when`()
             .post("/api/guestbook/posts")
+
+            .then()
+            .statusCode(OK.value())
+            .assertThat().body("$") { hasKey("postId") }
+            .assertThat().body("$") { hasKey("title") }
+            .assertThat().body("$") { hasKey("content") }
+            .assertThat().body("$") { hasKey("writerId") }
+            .assertThat().body("$") { hasKey("createdAt") }
+            .assertThat().body("$") { hasKey("updatedAt") }
+            .extract()
+            .asString()
+
+        val element: JsonElement = JsonParser.parseString(response)
+        println(gson.toJson(element))
+    }
+    
+    private fun retrievePost(id: Long) {
+        val response: String = given()
+            .log().all()
+            .port(port!!)
+            .accept(APPLICATION_JSON_VALUE)
+
+            .`when`()
+            .get("/api/guestbook/posts/$id")
 
             .then()
             .statusCode(OK.value())
