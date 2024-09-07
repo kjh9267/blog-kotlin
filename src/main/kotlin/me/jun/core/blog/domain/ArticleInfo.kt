@@ -12,13 +12,13 @@ open class ArticleInfo(
     open var content: String
 ) {
 
-    fun updateTitle(newTitle: String): ArticleInfo {
-        this.title = newTitle
+    fun updateTitle(newTitle: String?): ArticleInfo {
+        this.title = newTitle!!
         return this;
     }
 
-    fun updateContent(newContent: String): ArticleInfo {
-        this.content = newContent;
+    fun updateContent(newContent: String?): ArticleInfo {
+        this.content = newContent!!
         return this;
     }
 

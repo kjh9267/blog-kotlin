@@ -31,7 +31,8 @@ open class Article(
     open var updatedAt: Instant?
 ) {
 
-    fun updateArticleInfo(newTitle: String, newContent: String): Article {
+    fun updateArticleInfo(writerId: Long, newTitle: String, newContent: String): Article {
+        writer.validate(writerId)
         articleInfo = articleInfo?.updateTitle(newTitle)
             ?.updateContent(newContent)
 

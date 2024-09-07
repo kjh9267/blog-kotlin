@@ -39,7 +39,11 @@ class ArticleService(
         val article: Article = articleRepository.findByArticleId(request!!.articleId)
             ?: throw ArticleNotFoundException.of(request.articleId.toString())
 
-        val updatedArticle: Article = article.updateArticleInfo(request.newTitle, request.newContent)
+        val updatedArticle: Article = article.updateArticleInfo(
+            writerId = request.writerId!!,
+            newTitle = request.newTitle,
+            newContent = request.newContent
+        )
 
         return ArticleResponse.of(updatedArticle)
     }
