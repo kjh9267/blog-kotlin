@@ -31,8 +31,10 @@ class PostService(
         val post: Post = postRepository.findByPostId(request!!.postId)
             ?: throw PostNotFoundException.of(request.postId.toString())
 
-        val updatedPost = post.updateTitle(request.newTitle)
-            .updateContent(request.newContent)
+        val updatedPost: Post = post.updatePostInfo(
+            newTitle = request.newTitle,
+            newContent = request.newContent
+        )
 
         return PostResponse.of(updatedPost)
     }

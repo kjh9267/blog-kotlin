@@ -16,8 +16,8 @@ data class PostResponse(
         fun of(post: Post): PostResponse {
             return PostResponse(
                 postId = post.postId!!,
-                title = post.title,
-                content = post.content,
+                title = post.postInfo.title,
+                content = post.postInfo.content,
                 writerId = post.writerId,
                 createdAt = post.createdAt!!,
                 updatedAt = post.updatedAt!!

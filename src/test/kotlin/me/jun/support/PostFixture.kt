@@ -2,6 +2,7 @@ package me.jun.support
 
 import me.jun.core.guestbook.application.dto.*
 import me.jun.core.guestbook.domain.Post
+import me.jun.core.guestbook.domain.PostInfo
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import java.time.Instant
@@ -26,19 +27,24 @@ val POST_UPDATED_AT: Instant = now()
 val post: () -> Post = fun (): Post {
     return Post(
         postId = POST_ID,
-        title = POST_TITLE,
-        content = POST_CONTENT,
+        postInfo = postInfo(),
         writerId = POST_WRITER_ID,
         createdAt = POST_CREATED_AT,
         updatedAt = POST_UPDATED_AT
     )
 }
 
+val postInfo: () -> PostInfo = fun (): PostInfo {
+    return PostInfo(
+        title = POST_TITLE,
+        content = POST_CONTENT
+    )
+}
+
 val updatedPost: () -> Post = fun (): Post {
     return Post(
         postId = POST_ID,
-        title = NEW_POST_TITLE,
-        content = NEW_POST_CONTENT,
+        postInfo = postInfo(),
         writerId = POST_WRITER_ID,
         createdAt = POST_CREATED_AT,
         updatedAt = POST_UPDATED_AT
