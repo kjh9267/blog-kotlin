@@ -18,7 +18,7 @@ class PostCountRepositoryTest {
     private lateinit var postCountRepository: PostCountRepository
 
     @Test
-    fun findByPostCountIdTest() {
+    fun findByPostIdTest() {
         val expected: PostCount = postCount()
 
         postCountRepository.save(
@@ -30,13 +30,13 @@ class PostCountRepositoryTest {
             )
         )
 
-        assertThat(postCountRepository.findByPostCountId(POST_COUNT_ID))
+        assertThat(postCountRepository.findByPostId(POST_COUNT_ID))
             .isEqualTo(expected)
     }
 
     @Test
-    fun noPostCount_findByPostCountIdFailTest() {
-        assertThat(postCountRepository.findByPostCountId(POST_COUNT_ID))
+    fun noPostCount_findByPostIdFailTest() {
+        assertThat(postCountRepository.findByPostId(POST_COUNT_ID))
             .isNull()
     }
 }
