@@ -13,7 +13,7 @@ class ArticleTest {
             articleId = ARTICLE_ID,
             categoryId = CATEGORY_ID,
             articleInfo = articleInfo(),
-            writerId = ARTICLE_WRITER_ID,
+            writer = writer(),
             createdAt = ARTICLE_CREATED_AT,
             updatedAt = ARTICLE_UPDATED_AT
         )
@@ -28,7 +28,7 @@ class ArticleTest {
             articleId = ARTICLE_ID,
             categoryId = CATEGORY_ID,
             articleInfo = updatedArticleInfo(),
-            writerId = ARTICLE_WRITER_ID,
+            writer = writer(),
             createdAt = ARTICLE_CREATED_AT,
             updatedAt = ARTICLE_UPDATED_AT
         )

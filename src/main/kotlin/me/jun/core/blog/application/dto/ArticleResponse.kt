@@ -18,7 +18,7 @@ data class ArticleResponse(
                 id = article.articleId,
                 title = article.articleInfo!!.title,
                 content = article.articleInfo!!.content,
-                writerId = article.writerId,
+                writerId = article.writer.value,
                 createdAt = article.createdAt,
                 updatedAt = article.updatedAt
             )
