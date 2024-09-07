@@ -18,7 +18,7 @@ data class PostResponse(
                 postId = post.postId!!,
                 title = post.postInfo.title,
                 content = post.postInfo.content,
-                writerId = post.writerId,
+                writerId = post.writer.value,
                 createdAt = post.createdAt!!,
                 updatedAt = post.updatedAt!!
             )

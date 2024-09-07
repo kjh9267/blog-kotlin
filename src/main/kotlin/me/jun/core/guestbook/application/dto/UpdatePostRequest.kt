@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
 import me.jun.core.guestbook.domain.Post
 import me.jun.core.guestbook.domain.PostInfo
+import me.jun.core.guestbook.domain.Writer
 
 data class UpdatePostRequest(
     @field:NotNull
@@ -24,7 +25,7 @@ data class UpdatePostRequest(
                 title = newTitle,
                 content = newContent
             ),
-            writerId = writerId,
+            writer = Writer(writerId),
             createdAt = null,
             updatedAt = null
         )

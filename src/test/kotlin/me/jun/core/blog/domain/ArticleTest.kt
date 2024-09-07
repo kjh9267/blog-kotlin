@@ -42,7 +42,7 @@ class ArticleTest {
             articleId = ARTICLE_ID,
             categoryId = CATEGORY_ID,
             articleInfo = articleInfo(),
-            writer = writer(),
+            writer = articleWriter(),
             createdAt = ARTICLE_CREATED_AT,
             updatedAt = ARTICLE_UPDATED_AT
         )

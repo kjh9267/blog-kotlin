@@ -1,8 +1,8 @@
-package me.jun.core.blog.domain
+package me.jun.core.guestbook.domain
 
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
-import me.jun.core.blog.domain.exception.WriterMismatchException
+import me.jun.core.guestbook.domain.exception.WriterMismatchException
 
 @Embeddable
 open class Writer(
@@ -10,10 +10,10 @@ open class Writer(
         name = "writerId",
         nullable = false
     )
-    open var value: Long,
+    open var value: Long
 ) {
 
-    fun validate(value: Long?): Unit {
+    fun validate(value: Long) {
         if (this.value != value) {
             throw WriterMismatchException.of(value.toString())
         }

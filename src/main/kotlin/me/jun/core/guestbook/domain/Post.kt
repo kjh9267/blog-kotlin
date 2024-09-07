@@ -16,8 +16,8 @@ open class Post(
     @Embedded
     open var postInfo: PostInfo,
 
-    @Column(nullable = false)
-    open var writerId: Long,
+    @Embedded
+    open var writer: Writer,
 
     @Column(nullable = false)
     @CreatedDate

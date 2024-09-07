@@ -31,7 +31,7 @@ class PostTest {
         val expected: Post = Post(
             postId = POST_ID,
             postInfo = postInfo(),
-            writerId = ARTICLE_WRITER_ID,
+            writer = postWriter(),
             createdAt = POST_CREATED_AT,
             updatedAt = POST_UPDATED_AT
         )

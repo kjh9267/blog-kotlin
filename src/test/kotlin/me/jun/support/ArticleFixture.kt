@@ -30,13 +30,13 @@ val article: () -> Article = fun (): Article {
         articleId = ARTICLE_ID,
         categoryId = CATEGORY_ID,
         articleInfo = articleInfo(),
-        writer = writer(),
+        writer = articleWriter(),
         createdAt = ARTICLE_CREATED_AT,
         updatedAt = ARTICLE_UPDATED_AT
     )
 }
 
-val writer: () -> Writer = fun (): Writer {
+val articleWriter: () -> Writer = fun (): Writer {
     return Writer(POST_WRITER_ID)
 }
 
@@ -52,7 +52,7 @@ val updatedArticle: () -> Article = fun (): Article {
         articleId = ARTICLE_ID,
         categoryId = CATEGORY_ID,
         articleInfo = updatedArticleInfo(),
-        writer = writer(),
+        writer = articleWriter(),
         createdAt = ARTICLE_CREATED_AT,
         updatedAt = ARTICLE_UPDATED_AT
     )

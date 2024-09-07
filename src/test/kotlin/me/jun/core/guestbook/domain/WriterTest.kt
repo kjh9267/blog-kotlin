@@ -1,8 +1,8 @@
-package me.jun.core.blog.domain
+package me.jun.core.guestbook.domain
 
-import me.jun.core.blog.domain.exception.WriterMismatchException
+import me.jun.core.guestbook.domain.exception.WriterMismatchException
 import me.jun.support.POST_WRITER_ID
-import me.jun.support.articleWriter
+import me.jun.support.postWriter
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
@@ -13,16 +13,18 @@ class WriterTest {
 
     @Test
     fun constructorTest() {
-        val expected: Writer = Writer(value = POST_WRITER_ID)
+        val expected: Writer = Writer(
+            value = POST_WRITER_ID
+        )
 
-        assertThat(Writer(POST_WRITER_ID))
+        assertThat(postWriter())
             .isEqualToComparingFieldByField(expected)
     }
 
     @Test
     fun validateTest() {
         assertDoesNotThrow {
-            articleWriter().validate(POST_WRITER_ID)
+            postWriter().validate(POST_WRITER_ID)
         }
     }
 
@@ -31,7 +33,7 @@ class WriterTest {
         assertThrows(
             WriterMismatchException::class.java
         ) {
-            articleWriter().validate(0L)
+            postWriter().validate(0L)
         }
     }
 }

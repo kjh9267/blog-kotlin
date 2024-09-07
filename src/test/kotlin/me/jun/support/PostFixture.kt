@@ -4,6 +4,7 @@ import me.jun.core.guestbook.application.dto.*
 import me.jun.core.guestbook.domain.Post
 import me.jun.core.guestbook.domain.PostCount
 import me.jun.core.guestbook.domain.PostInfo
+import me.jun.core.guestbook.domain.Writer
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import java.time.Instant
@@ -35,9 +36,15 @@ val post: () -> Post = fun (): Post {
     return Post(
         postId = POST_ID,
         postInfo = postInfo(),
-        writerId = POST_WRITER_ID,
+        writer = postWriter(),
         createdAt = POST_CREATED_AT,
         updatedAt = POST_UPDATED_AT
+    )
+}
+
+val postWriter: () -> Writer = fun (): Writer {
+    return Writer(
+        value = POST_WRITER_ID
     )
 }
 
@@ -61,7 +68,7 @@ val updatedPost: () -> Post = fun (): Post {
     return Post(
         postId = POST_ID,
         postInfo = postInfo(),
-        writerId = POST_WRITER_ID,
+        writer = postWriter(),
         createdAt = POST_CREATED_AT,
         updatedAt = POST_UPDATED_AT
     )
