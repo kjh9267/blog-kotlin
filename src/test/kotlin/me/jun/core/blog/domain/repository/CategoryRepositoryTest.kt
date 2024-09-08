@@ -68,6 +68,7 @@ class CategoryRepositoryTest {
             categoryRepository.save(
                 category().apply {
                     this.categoryId = id.toLong()
+                    this.name = id.toString()
                 }
             )
         }

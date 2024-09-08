@@ -8,7 +8,7 @@ open class Category(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     open var categoryId: Long?,
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     open var name: String,
 
     @Column(nullable = false)
