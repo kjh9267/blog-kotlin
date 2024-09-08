@@ -8,7 +8,7 @@ import me.jun.core.blog.domain.Category
 
 const val CATEGORY_ID: Long = 1L
 
-const val CATEGORY_NAME: String = "category name string"
+const val CATEGORY_NAME: String = "category"
 
 const val NEW_CATEGORY_NAME: String = "new category name string"
 

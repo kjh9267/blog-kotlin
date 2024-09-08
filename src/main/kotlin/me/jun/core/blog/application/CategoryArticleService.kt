@@ -50,9 +50,9 @@ class CategoryArticleService(
         )
     }
 
-    fun retrievePagedCategoryArticles(categoryName: String, pageable: Pageable): PagedArticleResponse {
+    fun retrievePagedCategoryArticles(categoryName: String?, pageable: Pageable?): PagedArticleResponse {
         val category: Category = categoryRepository.findByName(categoryName)
-            ?: throw CategoryNotFoundException.of(categoryName)
+            ?: throw CategoryNotFoundException.of(categoryName!!)
 
         val pagedArticles = articleRepository.findAllByCategoryId(
             categoryId = category.categoryId,
