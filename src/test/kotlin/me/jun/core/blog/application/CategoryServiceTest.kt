@@ -1,9 +1,12 @@
 package me.jun.core.blog.application
 
+import me.jun.core.blog.application.dto.PagedCategoryResponse
 import me.jun.core.blog.domain.Category
 import me.jun.core.blog.domain.repository.CategoryRepository
 import me.jun.support.CATEGORY_NAME
 import me.jun.support.category
+import me.jun.support.pagedCategories
+import me.jun.support.pagedCategoryResponse
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -12,6 +15,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
+import org.springframework.data.domain.PageRequest
 
 @ExtendWith(MockitoExtension::class)
 @Suppress("Deprecation")
@@ -49,6 +53,17 @@ class CategoryServiceTest {
             .willReturn(category())
 
         assertThat(categoryService.createCategoryOrElseGet(CATEGORY_NAME))
+            .isEqualToComparingFieldByField(expected)
+    }
+
+    @Test
+    fun retrievePagedCategoriesTest() {
+        val expected: PagedCategoryResponse = pagedCategoryResponse()
+
+        given(categoryRepository.findAllBy(any()))
+            .willReturn(pagedCategories())
+
+        assertThat(categoryService.retrievePagedCategories(PageRequest.of(0, 10)))
             .isEqualToComparingFieldByField(expected)
     }
 }

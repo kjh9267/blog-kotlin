@@ -1,6 +1,7 @@
 package me.jun.core.blog.application
 
 import me.jun.core.blog.application.dto.CategoryArticleResponse
+import me.jun.core.blog.application.dto.PagedArticleResponse
 import me.jun.core.blog.application.dto.UpdateCategoryOfArticleRequest
 import me.jun.core.blog.application.exception.ArticleNotFoundException
 import me.jun.core.blog.application.exception.CategoryNotFoundException
@@ -9,6 +10,7 @@ import me.jun.core.blog.domain.Category
 import me.jun.core.blog.domain.repository.ArticleRepository
 import me.jun.core.blog.domain.repository.CategoryRepository
 import me.jun.core.blog.domain.service.CategoryMatchingService
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -46,5 +48,17 @@ class CategoryArticleService(
             articleId = article.articleId!!,
             newCategoryName = request.newCategoryName
         )
+    }
+
+    fun retrievePagedCategoryArticles(categoryName: String?, pageable: Pageable?): PagedArticleResponse {
+        val category: Category = categoryRepository.findByName(categoryName)
+            ?: throw CategoryNotFoundException.of(categoryName!!)
+
+        val pagedArticles = articleRepository.findAllByCategoryId(
+            categoryId = category.categoryId,
+            pageable = pageable
+        )
+
+        return PagedArticleResponse.of(pagedArticles)
     }
 }

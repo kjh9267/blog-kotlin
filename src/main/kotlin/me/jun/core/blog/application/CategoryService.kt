@@ -1,9 +1,10 @@
 package me.jun.core.blog.application
 
-import me.jun.core.blog.application.dto.CategoryResponse
-import me.jun.core.blog.application.dto.CreateCategoryRequest
+import me.jun.core.blog.application.dto.PagedCategoryResponse
 import me.jun.core.blog.domain.Category
 import me.jun.core.blog.domain.repository.CategoryRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -22,5 +23,10 @@ class CategoryService(
 
         return categoryRepository.findByName(categoryName)
             ?: categoryRepository.save(category)
+    }
+
+    fun retrievePagedCategories(pageable: Pageable?): PagedCategoryResponse {
+        val pagedCategories: Page<Category> = categoryRepository.findAllBy(pageable)
+        return PagedCategoryResponse.of(pagedCategories)
     }
 }
