@@ -1,10 +1,11 @@
 package me.jun.support
 
 import me.jun.core.blog.application.dto.CategoryArticleResponse
-import me.jun.core.blog.application.dto.CategoryResponse
-import me.jun.core.blog.application.dto.CreateCategoryRequest
+import me.jun.core.blog.application.dto.PagedCategoryResponse
 import me.jun.core.blog.application.dto.UpdateCategoryOfArticleRequest
 import me.jun.core.blog.domain.Category
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 
 const val CATEGORY_ID: Long = 1L
 
@@ -36,4 +37,20 @@ val categoryArticleResponse: () -> CategoryArticleResponse = fun (): CategoryArt
         articleId = ARTICLE_ID,
         newCategoryName = NEW_CATEGORY_NAME
     )
+}
+
+val categoryList: () -> List<Category> = fun (): List<Category> {
+    return (1..10).map {
+        category().apply {
+            this.categoryId = it.toLong()
+        }
+    }
+}
+
+val pagedCategories: () -> Page<Category> = fun (): Page<Category> {
+    return PageImpl(categoryList())
+}
+
+val pagedCategoryResponse: () -> PagedCategoryResponse = fun (): PagedCategoryResponse {
+    return PagedCategoryResponse.of(pagedCategories())
 }
