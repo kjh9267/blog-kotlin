@@ -25,7 +25,7 @@ class CategoryService(
             ?: categoryRepository.save(category)
     }
 
-    fun retrievePagedCategories(pageable: Pageable): PagedCategoryResponse {
+    fun retrievePagedCategories(pageable: Pageable?): PagedCategoryResponse {
         val pagedCategories: Page<Category> = categoryRepository.findAllBy(pageable)
         return PagedCategoryResponse.of(pagedCategories)
     }

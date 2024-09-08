@@ -1,7 +1,9 @@
 package me.jun.core.blog.persentation
 
 import me.jun.core.blog.application.CategoryArticleService
+import me.jun.core.blog.application.CategoryService
 import me.jun.support.pagedArticleResponse
+import me.jun.support.pagedCategoryResponse
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.BDDMockito.given
@@ -28,8 +30,11 @@ class CategoryControllerTest {
     @MockBean
     private lateinit var categoryArticleService: CategoryArticleService
 
+    @MockBean
+    private lateinit var categoryService: CategoryService
+
     @Test
-    fun retrievePagedCategoryArticles() {
+    fun retrievePagedCategoryArticlesTest() {
         given(categoryArticleService.retrievePagedCategoryArticles(any(), any()))
             .willReturn(pagedArticleResponse())
 
@@ -41,5 +46,20 @@ class CategoryControllerTest {
             .andExpect(status().is2xxSuccessful)
             .andExpect(jsonPath("articleResponses").exists())
             .andExpect(jsonPath("articleResponses.size").exists())
+    }
+
+    @Test
+    fun retrievePagedCategoriesTest() {
+        given(categoryService.retrievePagedCategories(any()))
+            .willReturn(pagedCategoryResponse())
+
+        mockMvc.perform(
+            get("/api/blog/categories?page=0&size=10")
+                .accept(APPLICATION_JSON)
+        )
+            .andDo(print())
+            .andExpect(status().is2xxSuccessful)
+            .andExpect(jsonPath("categoryResponses").exists())
+            .andExpect(jsonPath("categoryResponses.size").exists())
     }
 }
