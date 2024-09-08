@@ -8,6 +8,8 @@ import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 
@@ -58,5 +60,19 @@ class CategoryRepositoryTest {
     fun noCategory_findByCategoryIdFailTest() {
         assertThat(categoryRepository.findByCategoryId(CATEGORY_ID))
             .isNull()
+    }
+
+    @Test
+    fun findAllByTest() {
+        for (id in 1..20) {
+            categoryRepository.save(
+                category().apply {
+                    this.categoryId = id.toLong()
+                }
+            )
+        }
+
+        val page: Page<Category> = categoryRepository.findAllBy(PageRequest.of(0, 10))
+        assertThat(page.numberOfElements).isEqualTo(10)
     }
 }
