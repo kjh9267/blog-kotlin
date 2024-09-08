@@ -13,7 +13,7 @@ open class Writer(
     open var value: Long
 ) {
 
-    fun validate(value: Long) {
+    fun validate(value: Long?): Unit {
         if (this.value != value) {
             throw WriterMismatchException.of(value.toString())
         }

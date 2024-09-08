@@ -36,6 +36,7 @@ class PostService(
             ?: throw PostNotFoundException.of(request.postId.toString())
 
         val updatedPost: Post = post.updatePostInfo(
+            writerId = request.writerId,
             newTitle = request.newTitle,
             newContent = request.newContent
         )

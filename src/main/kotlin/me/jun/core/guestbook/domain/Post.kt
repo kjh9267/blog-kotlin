@@ -28,7 +28,8 @@ open class Post(
     open var updatedAt: Instant?
 ) {
 
-    fun updatePostInfo(newTitle: String, newContent: String): Post {
+    fun updatePostInfo(writerId: Long, newTitle: String, newContent: String): Post {
+        writer.validate(writerId)
         this.postInfo = postInfo.updateTitle(newTitle)
             .updateContent(newContent)
 
