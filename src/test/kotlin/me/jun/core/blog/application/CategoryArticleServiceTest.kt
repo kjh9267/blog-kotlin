@@ -1,5 +1,6 @@
 package me.jun.core.blog.application
 
+import me.jun.core.blog.application.dto.PagedArticleResponse
 import me.jun.core.blog.application.exception.ArticleNotFoundException
 import me.jun.core.blog.application.exception.CategoryNotFoundException
 import me.jun.core.blog.domain.Article
@@ -18,6 +19,7 @@ import org.mockito.BDDMockito.*
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
+import org.springframework.data.domain.PageRequest
 
 @ExtendWith(MockitoExtension::class)
 @Suppress("Deprecation")
@@ -143,5 +145,22 @@ class CategoryArticleServiceTest {
         ) {
             categoryArticleService.updateCategoryOfArticle(updateCategoryOfArticleRequest())
         }
+    }
+
+    @Test
+    fun retrievePagedCategoryArticlesTest() {
+        val expected: PagedArticleResponse = pagedArticleResponse()
+
+        given(categoryRepository.findByName(any()))
+            .willReturn(category())
+
+        given(articleRepository.findAllByCategoryId(any(), any()))
+            .willReturn(pagedArticles())
+
+        assertThat(categoryArticleService.retrievePagedCategoryArticles(
+            categoryName = CATEGORY_NAME,
+            pageable = PageRequest.of(0, 10))
+        )
+            .isEqualToComparingFieldByField(expected)
     }
 }
