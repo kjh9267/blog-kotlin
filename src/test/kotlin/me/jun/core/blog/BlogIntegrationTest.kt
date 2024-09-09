@@ -25,6 +25,18 @@ class BlogIntegrationTest: IntegrationTest() {
         deleteArticle(1L)
     }
 
+    @Test
+    fun retrievePagedArticlesTest() {
+        register()
+        login()
+
+        for (count in 1..10) {
+            createArticle()
+        }
+
+        retrievePagedArticles(0, 10)
+    }
+
     private fun createArticle() {
         val response = given()
             .log().all()
@@ -114,6 +126,26 @@ class BlogIntegrationTest: IntegrationTest() {
 
             .then()
             .statusCode(NO_CONTENT.value())
+            .extract()
+            .asString()
+
+        val element: JsonElement = JsonParser.parseString(response)
+        println(gson.toJson(element))
+    }
+
+    private fun retrievePagedArticles(page: Int, size: Int): Unit {
+        val response: String = given()
+            .log().all()
+            .port(port!!)
+            .accept(APPLICATION_JSON_VALUE)
+
+            .`when`()
+            .get("/api/blog/articles/query?page=$page&size=$size")
+
+            .then()
+            .statusCode(OK.value())
+            .assertThat().body("$") { hasKey("articleResponses") }
+            .assertThat().body("articleResponses") { hasKey("size") }
             .extract()
             .asString()
 
