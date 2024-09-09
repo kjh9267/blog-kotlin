@@ -25,6 +25,18 @@ class GuestbookIntegrationTest: IntegrationTest() {
         deletePost(1L)
     }
 
+    @Test
+    fun retrievePagedPostsTest() {
+        register()
+        login()
+
+        for (count in 1..10) {
+            createPost()
+        }
+
+        retrievePagedPosts(0, 10)
+    }
+
     private fun createPost() {
         val response: String = given()
             .log().all()
@@ -114,6 +126,28 @@ class GuestbookIntegrationTest: IntegrationTest() {
 
             .then()
             .statusCode(NO_CONTENT.value())
+            .extract()
+            .asString()
+
+        val element: JsonElement = JsonParser.parseString(response)
+        println(gson.toJson(element))
+    }
+
+    private fun retrievePagedPosts(page: Int, size: Int) {
+        val response: String = given()
+            .log().all()
+            .port(port!!)
+            .accept(APPLICATION_JSON_VALUE)
+            .queryParam("page", page)
+            .queryParam("size", size)
+
+            .`when`()
+            .get("/api/guestbook/posts/query")
+
+            .then()
+            .statusCode(OK.value())
+            .assertThat().body("$") { hasKey("postResponses") }
+            .assertThat().body("postResponses") { hasKey("size") }
             .extract()
             .asString()
 
