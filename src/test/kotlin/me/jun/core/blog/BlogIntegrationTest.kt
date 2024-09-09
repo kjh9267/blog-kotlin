@@ -3,6 +3,7 @@ package me.jun.core.blog
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import io.restassured.RestAssured.given
+import me.jun.core.blog.application.dto.CreateArticleRequest
 import me.jun.support.IntegrationTest
 import me.jun.support.createArticleRequest
 import me.jun.support.updateArticleRequest
@@ -37,14 +38,30 @@ class BlogIntegrationTest: IntegrationTest() {
         retrievePagedArticles(0, 10)
     }
 
-    private fun createArticle() {
+    @Test
+    fun retrievePagedCategoriesTest() {
+        register()
+        login()
+
+        for (category in 1..10) {
+            createArticle(category.toString())
+        }
+
+        retrievePagedCategories(0, 10)
+    }
+
+    private fun createArticle(category: String = "DefaultCategoryName") {
+        val content: CreateArticleRequest = createArticleRequest().apply {
+            this.categoryName = category
+        }
+
         val response = given()
             .log().all()
             .port(port!!)
             .accept(APPLICATION_JSON_VALUE)
             .contentType(APPLICATION_JSON_VALUE)
             .header(AUTHORIZATION, token)
-            .body(createArticleRequest())
+            .body(content)
 
             .`when`()
             .post("/api/blog/articles")
@@ -146,6 +163,28 @@ class BlogIntegrationTest: IntegrationTest() {
             .statusCode(OK.value())
             .assertThat().body("$") { hasKey("articleResponses") }
             .assertThat().body("articleResponses") { hasKey("size") }
+            .extract()
+            .asString()
+
+        val element: JsonElement = JsonParser.parseString(response)
+        println(gson.toJson(element))
+    }
+
+    private fun retrievePagedCategories(page: Int, size: Int): Unit {
+        val response: String = given()
+            .log().all()
+            .port(port!!)
+            .accept(APPLICATION_JSON_VALUE)
+            .queryParam("page", page)
+            .queryParam("size", size)
+
+            .`when`()
+            .get("/api/blog/categories")
+
+            .then()
+            .statusCode(OK.value())
+            .assertThat().body("$") { hasKey("categoryResponses") }
+            .assertThat().body("categoryResponses") { hasKey("size") }
             .extract()
             .asString()
 
