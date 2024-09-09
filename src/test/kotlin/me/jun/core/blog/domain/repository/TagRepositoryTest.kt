@@ -7,11 +7,13 @@ import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 
 @ActiveProfiles("test")
 @DataJpaTest
 @Suppress("Deprecation")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class TagRepositoryTest {
 
     @Autowired
@@ -29,5 +31,11 @@ class TagRepositoryTest {
 
         assertThat(tagRepository.findByTagId(TAG_ID))
             .isEqualToComparingFieldByField(expected)
+    }
+
+    @Test
+    fun findByTagIdFailTest() {
+        assertThat(tagRepository.findByTagId(TAG_ID))
+            .isNull()
     }
 }
