@@ -1,7 +1,7 @@
 package me.jun.core.blog.domain
 
 open class Tag(
-    open var tag_id: Long?,
+    open var tagId: Long?,
     open var name: String,
 ) {
 
@@ -9,16 +9,16 @@ open class Tag(
         if (this === other) return true
         if (other !is Tag) return false
 
-        if (tag_id != other.tag_id) return false
+        if (tagId != other.tagId) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return tag_id?.hashCode() ?: 0
+        return tagId?.hashCode() ?: 0
     }
 
     override fun toString(): String {
-        return "Tag(id=$tag_id, name='$name')"
+        return "Tag(id=$tagId, name='$name')"
     }
 }

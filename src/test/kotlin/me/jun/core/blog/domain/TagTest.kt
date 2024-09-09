@@ -12,7 +12,7 @@ class TagTest {
     @Test
     fun constructorTest() {
         val expected: Tag = Tag(
-            tag_id = TAG_ID,
+            tagId = TAG_ID,
             name = TAG_NAME
         )
 
