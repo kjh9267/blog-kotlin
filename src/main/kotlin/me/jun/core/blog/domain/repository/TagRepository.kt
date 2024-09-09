@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface TagRepository: JpaRepository<Tag, Long> {
 
-    fun findByTagId(tagId: Long?): Tag?
+    fun findByName(name: String?): Tag?
 }

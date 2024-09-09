@@ -9,8 +9,6 @@ const val TAG_NAME: String = "tag name"
 
 const val TAGGED_ARTICLE_ID: Long = 1L
 
-const val TAGGED_ARTICLE_NAME: String = "tagged article name"
-
 val tag: () -> Tag = fun(): Tag {
     return Tag(
         tagId = TAG_ID,
