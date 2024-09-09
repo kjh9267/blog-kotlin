@@ -1,8 +1,17 @@
 package me.jun.core.blog.domain
 
+import jakarta.persistence.*
+
+@Entity
 open class TaggedArticle(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     open var taggedArticleId: Long?,
+
+    @Column(nullable = false)
     open var tagId: Long?,
+
+    @Column(nullable = false)
     open var articleId: Long?
 ) {
 
