@@ -50,6 +50,18 @@ class BlogIntegrationTest: IntegrationTest() {
         retrievePagedCategories(0, 10)
     }
 
+    @Test
+    fun retrievePagedCategoryArticlesTest() {
+        register()
+        login()
+
+        for (count in 1..10) {
+            createArticle()
+        }
+
+        retrievePagedCategoryArticles("DefaultCategoryName", 0, 10)
+    }
+
     private fun createArticle(category: String = "DefaultCategoryName") {
         val content: CreateArticleRequest = createArticleRequest().apply {
             this.categoryName = category
@@ -185,6 +197,28 @@ class BlogIntegrationTest: IntegrationTest() {
             .statusCode(OK.value())
             .assertThat().body("$") { hasKey("categoryResponses") }
             .assertThat().body("categoryResponses") { hasKey("size") }
+            .extract()
+            .asString()
+
+        val element: JsonElement = JsonParser.parseString(response)
+        println(gson.toJson(element))
+    }
+
+    private fun retrievePagedCategoryArticles(category: String, page: Int, size: Int): Unit {
+        val response: String = given()
+            .log().all()
+            .port(port!!)
+            .accept(APPLICATION_JSON_VALUE)
+            .queryParam("page", page)
+            .queryParam("size", size)
+
+            .`when`()
+            .get("/api/blog/categories/$category")
+
+            .then()
+            .statusCode(OK.value())
+            .assertThat().body("$") { hasKey("articleResponses") }
+            .assertThat().body("articleResponses") { hasKey("size") }
             .extract()
             .asString()
 
