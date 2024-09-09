@@ -426,7 +426,7 @@ class PostControllerTest {
         )
             .andDo(print())
             .andExpect(status().is2xxSuccessful)
-            .andExpect(jsonPath("pageResponses").exists())
-            .andExpect(jsonPath("pageResponses.size").exists())
+            .andExpect(jsonPath("postResponses").exists())
+            .andExpect(jsonPath("postResponses.size").exists())
     }
 }

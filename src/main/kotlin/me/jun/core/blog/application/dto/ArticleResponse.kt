@@ -8,6 +8,7 @@ data class ArticleResponse(
     var title: String,
     var content: String,
     var writerId: Long,
+    var categoryId: Long,
     var createdAt: Instant?,
     var updatedAt: Instant?
 ) {
@@ -19,6 +20,7 @@ data class ArticleResponse(
                 title = article.articleInfo!!.title,
                 content = article.articleInfo!!.content,
                 writerId = article.writer.value,
+                categoryId = article.categoryId!!,
                 createdAt = article.createdAt,
                 updatedAt = article.updatedAt
             )

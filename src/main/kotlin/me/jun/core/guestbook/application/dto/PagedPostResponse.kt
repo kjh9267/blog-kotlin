@@ -4,7 +4,7 @@ import me.jun.core.guestbook.domain.Post
 import org.springframework.data.domain.Page
 
 data class PagedPostResponse(
-    var pageResponses: Page<PostResponse>
+    var postResponses: Page<PostResponse>
 ) {
 
     companion object {
