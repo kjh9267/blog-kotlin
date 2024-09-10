@@ -1,5 +1,6 @@
 package me.jun.core.blog.application
 
+import me.jun.core.blog.application.exception.TagNotFoundException
 import me.jun.core.blog.domain.Tag
 import me.jun.core.blog.domain.repository.TagRepository
 import org.springframework.stereotype.Service
@@ -19,5 +20,10 @@ class TagService(
 
         return tagRepository.findByName(tagName)
             ?: tagRepository.save(tag)
+    }
+
+    fun retrieveTag(tagId: Long): Tag {
+        return tagRepository.findByTagId(tagId)
+            ?: throw TagNotFoundException.of(tagId.toString())
     }
 }
