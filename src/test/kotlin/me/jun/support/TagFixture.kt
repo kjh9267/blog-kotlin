@@ -31,7 +31,8 @@ val taggedArticle: () -> TaggedArticle = fun(): TaggedArticle {
 val addTagRequest: () -> AddTagRequest = fun(): AddTagRequest {
     return AddTagRequest(
         articleId = ARTICLE_ID,
-        tagName = TAG_NAME
+        tagName = TAG_NAME,
+        writerId = ARTICLE_WRITER_ID
     )
 }
 

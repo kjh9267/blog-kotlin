@@ -9,7 +9,8 @@ data class AddTagRequest(
     @field:Positive
     var articleId: Long,
     @field:NotBlank
-    var tagName: String
+    var tagName: String,
+    var writerId: Long?
 ) {
 
 }
