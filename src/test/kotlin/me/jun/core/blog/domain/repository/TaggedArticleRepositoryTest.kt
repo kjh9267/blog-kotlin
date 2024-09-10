@@ -1,6 +1,7 @@
 package me.jun.core.blog.domain.repository
 
 import me.jun.core.blog.domain.TaggedArticle
+import me.jun.support.ARTICLE_ID
 import me.jun.support.TAGGED_ARTICLE_ID
 import me.jun.support.taggedArticle
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
@@ -37,5 +38,27 @@ class TaggedArticleRepositoryTest {
     fun findByTaggedArticleFailTest() {
         assertThat(taggedArticleRepository.findByTaggedArticleId(TAGGED_ARTICLE_ID))
             .isNull()
+    }
+
+    @Test
+    fun findAllByArticleIdTest() {
+        val expected: Long = 10L
+
+        for (count in 1..10) {
+            taggedArticleRepository.save(
+                taggedArticle().apply {
+                    this.taggedArticleId = null
+                }
+            )
+        }
+
+        assertThat(taggedArticleRepository.findAllByArticleId(ARTICLE_ID).size)
+            .isEqualTo(expected)
+    }
+
+    @Test
+    fun findAllByArticleIdFailTest() {
+        assertThat(taggedArticleRepository.findAllByArticleId(ARTICLE_ID).isEmpty())
+            .isTrue()
     }
 }
