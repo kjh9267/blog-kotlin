@@ -1,10 +1,8 @@
 package me.jun.core.blog.application
 
+import me.jun.core.blog.application.dto.TagListResponse
 import me.jun.core.blog.domain.repository.TaggedArticleRepository
-import me.jun.support.addTagRequest
-import me.jun.support.tag
-import me.jun.support.taggedArticle
-import me.jun.support.taggedArticleResponse
+import me.jun.support.*
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -44,5 +42,19 @@ class TaggedArticleServiceTest {
 
         assertThat(taggedArticleService.addTagToArticle(addTagRequest()))
             .isEqualToComparingFieldByField(taggedArticleResponse())
+    }
+
+    @Test
+    fun retrieveTagListTest() {
+        val expected: TagListResponse = tagListResponse()
+
+        given(taggedArticleRepository.findAllByArticleId(any()))
+            .willReturn(taggedArticles())
+
+        given(tagService.retrieveTag(any()))
+            .willReturn(tag())
+
+        assertThat(taggedArticleService.retrieveTagList(retrieveTagListRequest()))
+            .isEqualTo(expected)
     }
 }

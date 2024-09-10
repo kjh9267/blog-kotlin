@@ -22,7 +22,7 @@ class TagService(
             ?: tagRepository.save(tag)
     }
 
-    fun retrieveTag(tagId: Long): Tag {
+    fun retrieveTag(tagId: Long?): Tag {
         return tagRepository.findByTagId(tagId)
             ?: throw TagNotFoundException.of(tagId.toString())
     }

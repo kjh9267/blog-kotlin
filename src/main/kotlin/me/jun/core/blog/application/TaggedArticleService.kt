@@ -1,6 +1,8 @@
 package me.jun.core.blog.application
 
 import me.jun.core.blog.application.dto.AddTagRequest
+import me.jun.core.blog.application.dto.RetrieveTagListRequest
+import me.jun.core.blog.application.dto.TagListResponse
 import me.jun.core.blog.application.dto.TaggedArticleResponse
 import me.jun.core.blog.domain.Tag
 import me.jun.core.blog.domain.TaggedArticle
@@ -31,5 +33,17 @@ class TaggedArticleService(
         val savedTaggedArticle: TaggedArticle = taggedArticleRepository.save(taggedArticle)
 
         return TaggedArticleResponse.of(savedTaggedArticle)
+    }
+
+    fun retrieveTagList(request: RetrieveTagListRequest): TagListResponse {
+        val taggedArticles: List<TaggedArticle> = taggedArticleRepository.findAllByArticleId(request.articleId)
+        val tags: MutableList<Tag> = mutableListOf()
+
+        for (taggedArticle: TaggedArticle in taggedArticles) {
+            val tag: Tag = tagService.retrieveTag(taggedArticle.tagId!!)
+            tags.add(tag)
+        }
+
+        return TagListResponse.of(tags)
     }
 }
