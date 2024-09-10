@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface TaggedArticleRepository: JpaRepository<TaggedArticle, Long> {
 
     fun findByTaggedArticleId(taggedArticleId: Long?): TaggedArticle?
+
+    fun findAllByArticleId(articleId: Long?): List<TaggedArticle>
 }

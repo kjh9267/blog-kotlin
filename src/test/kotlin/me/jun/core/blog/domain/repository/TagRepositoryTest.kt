@@ -1,6 +1,7 @@
 package me.jun.core.blog.domain.repository
 
 import me.jun.core.blog.domain.Tag
+import me.jun.support.TAG_ID
 import me.jun.support.TAG_NAME
 import me.jun.support.tag
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
@@ -36,6 +37,26 @@ class TagRepositoryTest {
     @Test
     fun findByNameFailTest() {
         assertThat(tagRepository.findByName(TAG_NAME))
+            .isNull()
+    }
+
+    @Test
+    fun findByTagIdTest() {
+        val expected: Tag = tag()
+
+        tagRepository.save(
+            tag().apply {
+                this.tagId = null
+            }
+        )
+
+        assertThat(tagRepository.findByTagId(TAG_ID))
+            .isEqualToComparingFieldByField(expected)
+    }
+
+    @Test
+    fun findByTagIdFailTest() {
+        assertThat(tagRepository.findByTagId(TAG_ID))
             .isNull()
     }
 }
