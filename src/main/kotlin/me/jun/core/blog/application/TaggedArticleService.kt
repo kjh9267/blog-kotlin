@@ -17,8 +17,8 @@ class TaggedArticleService(
     private val tagService: TagService
 ) {
 
-    fun addTagToArticle(request: AddTagRequest): TaggedArticleResponse {
-        val tag: Tag = tagService.createTagOrElseGet(request.tagName)
+    fun addTagToArticle(request: AddTagRequest?): TaggedArticleResponse {
+        val tag: Tag = tagService.createTagOrElseGet(request!!.tagName)
         var taggedArticle: TaggedArticle = TaggedArticle(
             taggedArticleId = null,
             tagId = null,
