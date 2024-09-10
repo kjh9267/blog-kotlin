@@ -11,10 +11,10 @@ class TagService(
     private val tagRepository: TagRepository
 ) {
 
-    fun createTagOrElseGet(tagName: String): Tag {
+    fun createTagOrElseGet(tagName: String?): Tag {
         val tag: Tag = Tag(
             tagId = null,
-            name = tagName
+            name = tagName!!
         )
 
         return tagRepository.findByName(tagName)

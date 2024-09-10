@@ -1,5 +1,7 @@
 package me.jun.support
 
+import me.jun.core.blog.application.dto.AddTagRequest
+import me.jun.core.blog.application.dto.TaggedArticleResponse
 import me.jun.core.blog.domain.Tag
 import me.jun.core.blog.domain.TaggedArticle
 
@@ -18,6 +20,21 @@ val tag: () -> Tag = fun(): Tag {
 
 val taggedArticle: () -> TaggedArticle = fun(): TaggedArticle {
     return TaggedArticle(
+        taggedArticleId = TAGGED_ARTICLE_ID,
+        tagId = TAG_ID,
+        articleId = ARTICLE_ID
+    )
+}
+
+val addTagRequest: () -> AddTagRequest = fun(): AddTagRequest {
+    return AddTagRequest(
+        articleId = ARTICLE_ID,
+        tagName = TAG_NAME
+    )
+}
+
+val taggedArticleResponse: () -> TaggedArticleResponse = fun (): TaggedArticleResponse {
+    return TaggedArticleResponse(
         taggedArticleId = TAGGED_ARTICLE_ID,
         tagId = TAG_ID,
         articleId = ARTICLE_ID
