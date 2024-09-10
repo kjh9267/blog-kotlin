@@ -3,6 +3,7 @@ package me.jun.core.blog.persentation
 import com.fasterxml.jackson.databind.ObjectMapper
 import me.jun.core.blog.application.TaggedArticleService
 import me.jun.support.addTagRequest
+import me.jun.support.tagListResponse
 import me.jun.support.taggedArticleResponse
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -85,5 +87,19 @@ class TagControllerTest {
             .andDo(print())
             .andExpect(status().is4xxClientError)
             .andExpect(jsonPath("detail").exists())
+    }
+
+    @Test
+    fun retrieveTagListTest() {
+        given(taggedArticleService.retrieveTagList(any()))
+            .willReturn(tagListResponse())
+
+        mockMvc.perform(
+            get("/api/blog/tags?articleId=1")
+                .accept(APPLICATION_JSON)
+        )
+            .andDo(print())
+            .andExpect(status().is2xxSuccessful)
+            .andExpect(jsonPath("tagResponses").exists())
     }
 }

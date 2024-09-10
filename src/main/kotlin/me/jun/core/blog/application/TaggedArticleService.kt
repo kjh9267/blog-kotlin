@@ -35,8 +35,8 @@ class TaggedArticleService(
         return TaggedArticleResponse.of(savedTaggedArticle)
     }
 
-    fun retrieveTagList(request: RetrieveTagListRequest): TagListResponse {
-        val taggedArticles: List<TaggedArticle> = taggedArticleRepository.findAllByArticleId(request.articleId)
+    fun retrieveTagList(request: RetrieveTagListRequest?): TagListResponse {
+        val taggedArticles: List<TaggedArticle> = taggedArticleRepository.findAllByArticleId(request!!.articleId)
         val tags: MutableList<Tag> = mutableListOf()
 
         for (taggedArticle: TaggedArticle in taggedArticles) {
