@@ -1,6 +1,7 @@
 package me.jun.core.blog.persentation
 
 import jakarta.validation.Valid
+import me.jun.common.security.WriterId
 import me.jun.core.blog.application.TaggedArticleService
 import me.jun.core.blog.application.dto.AddTagRequest
 import me.jun.core.blog.application.dto.RetrieveTagListRequest
@@ -21,9 +22,14 @@ class TagController(
         consumes = [APPLICATION_JSON_VALUE]
     )
     fun addTagToArticle(
-        @RequestBody @Valid request: AddTagRequest
+        @RequestBody @Valid request: AddTagRequest,
+        @WriterId writerId: Long
     ): ResponseEntity<TaggedArticleResponse> {
-        val response: TaggedArticleResponse = taggedArticleService.addTagToArticle(request)
+        val response: TaggedArticleResponse = taggedArticleService.addTagToArticle(
+            request.apply {
+                this.writerId = writerId
+            }
+        )
         return ResponseEntity.ok()
             .body(response)
     }
