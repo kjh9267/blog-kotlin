@@ -2,6 +2,7 @@ package me.jun.core.blog.application
 
 import me.jun.core.blog.application.dto.TagListResponse
 import me.jun.core.blog.application.exception.ArticleNotFoundException
+import me.jun.core.blog.domain.exception.WriterMismatchException
 import me.jun.core.blog.domain.repository.ArticleRepository
 import me.jun.core.blog.domain.repository.TaggedArticleRepository
 import me.jun.support.*
@@ -64,7 +65,22 @@ class TaggedArticleServiceTest {
         ) {
             taggedArticleService.addTagToArticle(addTagRequest())
         }
+    }
 
+    @Test
+    fun invalidWriter_addTagToArticleFailTest() {
+        given(articleRepository.findByArticleId(any()))
+            .willReturn(
+                article().apply {
+                    this.writer.value = 2L
+                }
+            )
+
+        assertThrows(
+            WriterMismatchException::class.java
+        ) {
+            taggedArticleService.addTagToArticle(addTagRequest())
+        }
     }
 
     @Test
