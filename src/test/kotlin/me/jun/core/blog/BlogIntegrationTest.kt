@@ -3,6 +3,7 @@ package me.jun.core.blog
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import io.restassured.RestAssured.given
+import me.jun.core.blog.application.dto.AddTagRequest
 import me.jun.core.blog.application.dto.CreateArticleRequest
 import me.jun.support.IntegrationTest
 import me.jun.support.addTagRequest
@@ -68,7 +69,20 @@ class BlogIntegrationTest: IntegrationTest() {
         register()
         login()
         createArticle()
-        addTagToArticle()
+        addTagToArticle(1L)
+    }
+
+    @Test
+    fun retrieveTagListTest() {
+        register()
+        login()
+
+        for (tagName in 1..10) {
+            createArticle()
+            addTagToArticle(1L, tagName.toString())
+        }
+
+        retrieveTagList()
     }
 
     private fun createArticle(category: String = "DefaultCategoryName") {
@@ -235,7 +249,12 @@ class BlogIntegrationTest: IntegrationTest() {
         println(gson.toJson(element))
     }
 
-    private fun addTagToArticle(): Unit {
+    private fun addTagToArticle(articleId: Long, tagName: String = "DefaultTagName"): Unit {
+        val content: AddTagRequest = addTagRequest().apply {
+            this.articleId = articleId
+            this.tagName = tagName
+        }
+
         val response: String = given()
             .log().all()
             .port(port!!)
@@ -252,6 +271,25 @@ class BlogIntegrationTest: IntegrationTest() {
             .assertThat().body("$") { hasKey("taggedArticleId") }
             .assertThat().body("$") { hasKey("articleId") }
             .assertThat().body("$") { hasKey("tagId") }
+            .extract()
+            .asString()
+
+        val element: JsonElement = JsonParser.parseString(response)
+        println(gson.toJson(element))
+    }
+
+    private fun retrieveTagList() {
+        val response: String = given()
+            .log().all()
+            .port(port!!)
+            .accept(APPLICATION_JSON_VALUE)
+
+            .`when`()
+            .get("/api/blog/tags?articleId=1")
+
+            .then()
+            .statusCode(OK.value())
+            .assertThat().body("$") { hasKey("tagResponses") }
             .extract()
             .asString()
 
