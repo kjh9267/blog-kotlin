@@ -3,6 +3,7 @@ package me.jun.core.guestbook.application
 import me.jun.core.guestbook.application.dto.PagedPostResponse
 import me.jun.core.guestbook.application.dto.PostResponse
 import me.jun.core.guestbook.application.exception.PostNotFoundException
+import me.jun.core.guestbook.domain.exception.WriterMismatchException
 import me.jun.core.guestbook.domain.repository.PostRepository
 import me.jun.support.*
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
@@ -85,6 +86,22 @@ class PostServiceTest {
 
         assertThat(postService.updatePost(updatePostRequest()))
             .isEqualToComparingFieldByField(expected)
+    }
+
+    @Test
+    fun invalidWriter_updatePostFailTest() {
+        given(postRepository.findByPostId(any()))
+            .willReturn(
+                post().apply {
+                    this.writer.value = 2L
+                }
+            )
+
+        assertThrows(
+            WriterMismatchException::class.java
+        ) {
+            postService.updatePost(updatePostRequest())
+        }
     }
 
     @Test
