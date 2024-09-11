@@ -7,12 +7,13 @@ import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-@Transactional
 @Service
+@Transactional
 class DisplayService(
     private val displayRepositoryImpl: DisplayRepository<ArticleResponse>
 ) {
 
+    @Transactional(readOnly = true)
     fun retrieveDisplay(page: Int?, size: Int?): PagedArticleResponse {
         val result: Page<ArticleResponse> = displayRepositoryImpl.retrieveDisplay(page, size)
 

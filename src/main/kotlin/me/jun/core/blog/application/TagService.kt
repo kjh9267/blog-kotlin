@@ -22,6 +22,7 @@ class TagService(
             ?: tagRepository.save(tag)
     }
 
+    @Transactional(readOnly = true)
     fun retrieveTag(tagId: Long?): Tag {
         return tagRepository.findByTagId(tagId)
             ?: throw TagNotFoundException.of(tagId.toString())

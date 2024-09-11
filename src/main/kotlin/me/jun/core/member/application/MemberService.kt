@@ -21,6 +21,7 @@ class MemberService(
         return MemberResponse.of(savedMember)
     }
 
+    @Transactional(readOnly = true)
     fun retrieveMember(request: RetrieveMemberRequest?): MemberResponse {
         val member: Member = memberRepository.findByEmail(request!!.email)
             ?: throw MemberNotFoundException.of(request.email)
