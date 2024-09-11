@@ -9,7 +9,8 @@ data class UpdateCategoryOfArticleRequest(
     @field:Positive
     var articleId: Long,
     @field:NotBlank
-    var newCategoryName: String
+    var newCategoryName: String,
+    var writerId: Long
 ) {
 
 }

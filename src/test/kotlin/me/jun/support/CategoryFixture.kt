@@ -28,7 +28,8 @@ val category: () -> Category = fun (): Category {
 val updateCategoryOfArticleRequest: () -> UpdateCategoryOfArticleRequest = fun (): UpdateCategoryOfArticleRequest {
     return UpdateCategoryOfArticleRequest(
         articleId = ARTICLE_ID,
-        newCategoryName = NEW_CATEGORY_NAME
+        newCategoryName = NEW_CATEGORY_NAME,
+        writerId = ARTICLE_WRITER_ID
     )
 }
 

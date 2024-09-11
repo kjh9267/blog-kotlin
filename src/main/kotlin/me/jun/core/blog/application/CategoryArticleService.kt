@@ -26,6 +26,8 @@ class CategoryArticleService(
         val article: Article = articleRepository.findByArticleId(request.articleId)
             ?: throw ArticleNotFoundException.of(request.articleId.toString())
 
+        article.writer.validate(request.writerId)
+
         val oldCategory: Category = categoryRepository.findByCategoryId(article.categoryId)
             ?: throw CategoryNotFoundException.of(article.categoryId.toString())
 
