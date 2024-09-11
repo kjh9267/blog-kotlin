@@ -5,6 +5,7 @@ import me.jun.core.blog.application.dto.PagedArticleResponse
 import me.jun.core.blog.application.exception.ArticleNotFoundException
 import me.jun.core.blog.domain.Article
 import me.jun.core.blog.domain.Category
+import me.jun.core.blog.domain.exception.WriterMismatchException
 import me.jun.core.blog.domain.repository.ArticleRepository
 import me.jun.core.blog.domain.service.CategoryMatchingService
 import me.jun.support.*
@@ -104,6 +105,22 @@ class ArticleServiceTest {
 
         assertThat(articleService.updateArticle(updateArticleRequest()))
             .isEqualToComparingFieldByField(expected)
+    }
+
+    @Test
+    fun invalidWriter_updateWriterFailTest() {
+        given(articleRepository.findByArticleId(any()))
+            .willReturn(
+                article().apply {
+                    this.writer.value = 2L
+                }
+            )
+
+        assertThrows(
+            WriterMismatchException::class.java
+        ) {
+            articleService.updateArticle(updateArticleRequest())
+        }
     }
 
     @Test
