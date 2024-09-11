@@ -25,6 +25,8 @@ class TaggedArticleService(
         val article: Article = articleRepository.findByArticleId(request!!.articleId)
             ?: throw ArticleNotFoundException.of(request.articleId.toString())
 
+        article.writer.validate(request.writerId)
+
         val tag: Tag = tagService.createTagOrElseGet(request.tagName)
         var taggedArticle: TaggedArticle = TaggedArticle(
             taggedArticleId = null,
@@ -42,6 +44,7 @@ class TaggedArticleService(
         return TaggedArticleResponse.of(savedTaggedArticle)
     }
 
+    @Transactional(readOnly = true)
     fun retrieveTagList(request: RetrieveTagListRequest?): TagListResponse {
         val taggedArticles: List<TaggedArticle> = taggedArticleRepository.findAllByArticleId(request!!.articleId)
         val tags: MutableList<Tag> = mutableListOf()

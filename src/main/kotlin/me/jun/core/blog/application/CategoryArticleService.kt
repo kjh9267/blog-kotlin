@@ -26,6 +26,8 @@ class CategoryArticleService(
         val article: Article = articleRepository.findByArticleId(request.articleId)
             ?: throw ArticleNotFoundException.of(request.articleId.toString())
 
+        article.writer.validate(request.writerId)
+
         val oldCategory: Category = categoryRepository.findByCategoryId(article.categoryId)
             ?: throw CategoryNotFoundException.of(article.categoryId.toString())
 
@@ -50,6 +52,7 @@ class CategoryArticleService(
         )
     }
 
+    @Transactional(readOnly = true)
     fun retrievePagedCategoryArticles(categoryName: String?, pageable: Pageable?): PagedArticleResponse {
         val category: Category = categoryRepository.findByName(categoryName)
             ?: throw CategoryNotFoundException.of(categoryName!!)

@@ -23,6 +23,7 @@ class PostService(
         return PostResponse.of(savedPost)
     }
 
+    @Transactional(readOnly = true)
     fun retrievePost(request: RetrievePostRequest?): PostResponse {
         val post: Post = postRepository.findByPostId(request!!.postId)
             ?: throw PostNotFoundException.of(request.postId.toString())
@@ -34,6 +35,8 @@ class PostService(
     fun updatePost(request: UpdatePostRequest?): PostResponse {
         val post: Post = postRepository.findByPostId(request!!.postId)
             ?: throw PostNotFoundException.of(request.postId.toString())
+
+        post.writer.validate(request.writerId)
 
         val updatedPost: Post = post.updatePostInfo(
             writerId = request.writerId,

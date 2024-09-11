@@ -5,6 +5,7 @@ import me.jun.core.blog.application.exception.ArticleNotFoundException
 import me.jun.core.blog.application.exception.CategoryNotFoundException
 import me.jun.core.blog.domain.Article
 import me.jun.core.blog.domain.Category
+import me.jun.core.blog.domain.exception.WriterMismatchException
 import me.jun.core.blog.domain.repository.ArticleRepository
 import me.jun.core.blog.domain.repository.CategoryRepository
 import me.jun.core.blog.domain.service.CategoryMatchingService
@@ -79,6 +80,22 @@ class CategoryArticleServiceTest {
                 )
             }
         )
+    }
+
+    @Test
+    fun invalidWriter_updateCategoryOfArticleFailTest() {
+        given(articleRepository.findByArticleId(any()))
+            .willReturn(
+                article().apply {
+                    this.writer.value = 2L
+                }
+            )
+
+        assertThrows(
+            WriterMismatchException::class.java
+        ) {
+            categoryArticleService.updateCategoryOfArticle(updateCategoryOfArticleRequest())
+        }
     }
 
     @Test

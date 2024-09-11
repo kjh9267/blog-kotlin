@@ -3,8 +3,10 @@ package me.jun.core.blog
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import io.restassured.RestAssured.given
+import me.jun.core.blog.application.dto.AddTagRequest
 import me.jun.core.blog.application.dto.CreateArticleRequest
 import me.jun.support.IntegrationTest
+import me.jun.support.addTagRequest
 import me.jun.support.createArticleRequest
 import me.jun.support.updateArticleRequest
 import org.hamcrest.Matchers.hasKey
@@ -60,6 +62,27 @@ class BlogIntegrationTest: IntegrationTest() {
         }
 
         retrievePagedCategoryArticles("DefaultCategoryName", 0, 10)
+    }
+
+    @Test
+    fun addTagToArticleTest() {
+        register()
+        login()
+        createArticle()
+        addTagToArticle(1L)
+    }
+
+    @Test
+    fun retrieveTagListTest() {
+        register()
+        login()
+
+        for (tagName in 1..10) {
+            createArticle()
+            addTagToArticle(1L, tagName.toString())
+        }
+
+        retrieveTagList()
     }
 
     private fun createArticle(category: String = "DefaultCategoryName") {
@@ -219,6 +242,54 @@ class BlogIntegrationTest: IntegrationTest() {
             .statusCode(OK.value())
             .assertThat().body("$") { hasKey("articleResponses") }
             .assertThat().body("articleResponses") { hasKey("size") }
+            .extract()
+            .asString()
+
+        val element: JsonElement = JsonParser.parseString(response)
+        println(gson.toJson(element))
+    }
+
+    private fun addTagToArticle(articleId: Long, tagName: String = "DefaultTagName"): Unit {
+        val content: AddTagRequest = addTagRequest().apply {
+            this.articleId = articleId
+            this.tagName = tagName
+        }
+
+        val response: String = given()
+            .log().all()
+            .port(port!!)
+            .accept(APPLICATION_JSON_VALUE)
+            .contentType(APPLICATION_JSON_VALUE)
+            .header(AUTHORIZATION, token)
+            .body(addTagRequest())
+
+            .`when`()
+            .post("/api/blog/tags")
+
+            .then()
+            .statusCode(OK.value())
+            .assertThat().body("$") { hasKey("taggedArticleId") }
+            .assertThat().body("$") { hasKey("articleId") }
+            .assertThat().body("$") { hasKey("tagId") }
+            .extract()
+            .asString()
+
+        val element: JsonElement = JsonParser.parseString(response)
+        println(gson.toJson(element))
+    }
+
+    private fun retrieveTagList() {
+        val response: String = given()
+            .log().all()
+            .port(port!!)
+            .accept(APPLICATION_JSON_VALUE)
+
+            .`when`()
+            .get("/api/blog/tags?articleId=1")
+
+            .then()
+            .statusCode(OK.value())
+            .assertThat().body("$") { hasKey("tagResponses") }
             .extract()
             .asString()
 
