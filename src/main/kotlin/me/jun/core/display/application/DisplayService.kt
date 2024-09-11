@@ -13,7 +13,7 @@ class DisplayService(
     private val displayRepositoryImpl: DisplayRepository<ArticleResponse>
 ) {
 
-    fun retrieveDisplay(page: Int, size: Int): PagedArticleResponse {
+    fun retrieveDisplay(page: Int?, size: Int?): PagedArticleResponse {
         val result: Page<ArticleResponse> = displayRepositoryImpl.retrieveDisplay(page, size)
 
         return PagedArticleResponse.of(result)
