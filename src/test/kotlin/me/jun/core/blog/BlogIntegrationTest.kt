@@ -5,6 +5,7 @@ import com.google.gson.JsonParser
 import io.restassured.RestAssured.given
 import me.jun.core.blog.application.dto.CreateArticleRequest
 import me.jun.support.IntegrationTest
+import me.jun.support.addTagRequest
 import me.jun.support.createArticleRequest
 import me.jun.support.updateArticleRequest
 import org.hamcrest.Matchers.hasKey
@@ -60,6 +61,14 @@ class BlogIntegrationTest: IntegrationTest() {
         }
 
         retrievePagedCategoryArticles("DefaultCategoryName", 0, 10)
+    }
+
+    @Test
+    fun addTagToArticleTest() {
+        register()
+        login()
+        createArticle()
+        addTagToArticle()
     }
 
     private fun createArticle(category: String = "DefaultCategoryName") {
@@ -219,6 +228,30 @@ class BlogIntegrationTest: IntegrationTest() {
             .statusCode(OK.value())
             .assertThat().body("$") { hasKey("articleResponses") }
             .assertThat().body("articleResponses") { hasKey("size") }
+            .extract()
+            .asString()
+
+        val element: JsonElement = JsonParser.parseString(response)
+        println(gson.toJson(element))
+    }
+
+    private fun addTagToArticle(): Unit {
+        val response: String = given()
+            .log().all()
+            .port(port!!)
+            .accept(APPLICATION_JSON_VALUE)
+            .contentType(APPLICATION_JSON_VALUE)
+            .header(AUTHORIZATION, token)
+            .body(addTagRequest())
+
+            .`when`()
+            .post("/api/blog/tags")
+
+            .then()
+            .statusCode(OK.value())
+            .assertThat().body("$") { hasKey("taggedArticleId") }
+            .assertThat().body("$") { hasKey("articleId") }
+            .assertThat().body("$") { hasKey("tagId") }
             .extract()
             .asString()
 
