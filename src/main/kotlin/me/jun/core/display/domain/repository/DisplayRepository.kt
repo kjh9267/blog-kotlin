@@ -4,5 +4,5 @@ import org.springframework.data.domain.Page
 
 interface DisplayRepository<T> {
 
-    fun retrieveDisplay(page: Int, size: Int): Page<T>
+    fun retrieveDisplay(page: Int?, size: Int?): Page<T>
 }
