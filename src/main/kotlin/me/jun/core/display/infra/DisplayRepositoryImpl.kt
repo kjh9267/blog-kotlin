@@ -13,7 +13,14 @@ class DisplayRepositoryImpl(
 ): DisplayRepository<ArticleResponse> {
 
     override fun retrieveDisplay(page: Int?, size: Int?): Page<ArticleResponse> {
-        val query = "SELECT a.article_id, a.title, a.content, c.name, m.name member_name FROM article a JOIN category c ON a.category_id = c.category_id JOIN member m ON a.writer_id = m.member_id ORDER BY a.article_id ASC LIMIT ? OFFSET ?"
+        val query = "SELECT /*+ JOIN_FIXED_ORDER() */ " +
+                "a.article_id, a.title, a.content, c.name, m.name member_name " +
+                "FROM member m " +
+                "JOIN article a " +
+                "ON m.member_id = a.writer_id " +
+                "JOIN category c " +
+                "ON a.category_id = c.category_id " +
+                "ORDER BY a.article_id ASC LIMIT ? OFFSET ?"
 
         val resultList: List<ArticleResponse> = entityManager.createNativeQuery(query, ArticleResponse::class.java)
             .setParameter(1, size!!)
