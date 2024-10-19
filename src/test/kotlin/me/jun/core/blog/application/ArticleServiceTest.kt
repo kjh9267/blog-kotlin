@@ -5,6 +5,7 @@ import me.jun.core.blog.application.dto.PagedArticleResponse
 import me.jun.core.blog.application.exception.ArticleNotFoundException
 import me.jun.core.blog.domain.Article
 import me.jun.core.blog.domain.Category
+import me.jun.core.blog.domain.Writer
 import me.jun.core.blog.domain.exception.WriterMismatchException
 import me.jun.core.blog.domain.repository.ArticleRepository
 import me.jun.core.blog.domain.service.CategoryMatchingService
@@ -135,6 +136,9 @@ class ArticleServiceTest {
 
     @Test
     fun deleteArticleTest() {
+        given(articleRepository.findByArticleId(any()))
+            .willReturn(article())
+
         doNothing()
             .`when`(articleRepository)
             .deleteById(any())
@@ -143,6 +147,30 @@ class ArticleServiceTest {
 
         verify(articleRepository)
             .deleteById(ARTICLE_ID)
+    }
+
+    @Test
+    fun noArticle_deleteArticleFailTest() {
+        given(articleRepository.findByArticleId(any()))
+            .willReturn(null)
+
+        assertThrows(ArticleNotFoundException::class.java) {
+            articleService.deleteArticle(deleteArticleRequest())
+        }
+    }
+
+    @Test
+    fun invalidWriter_deleteArticleFailTest() {
+        given(articleRepository.findByArticleId(any()))
+            .willReturn(
+                article().apply {
+                    this.writer = Writer(2L)
+                }
+            )
+
+        assertThrows(WriterMismatchException::class.java) {
+            articleService.deleteArticle(deleteArticleRequest())
+        }
     }
 
     @Test

@@ -64,7 +64,12 @@ class ArticleController(
         @PathVariable articleId: Long,
         @WriterId writerId: Long
     ): ResponseEntity<Void> {
-        articleService.deleteArticle(DeleteArticleRequest.of(articleId))
+        articleService.deleteArticle(
+            DeleteArticleRequest(
+                articleId = articleId,
+                writerId = writerId
+            )
+        )
         return ResponseEntity.noContent()
             .build()
     }

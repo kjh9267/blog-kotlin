@@ -23,7 +23,11 @@ class PostController(
         @RequestBody @Valid request: CreatePostRequest,
         @WriterId writerId: Long
     ): ResponseEntity<PostResponse> {
-        val postResponse: PostResponse = postService.createPost(request)
+        val postResponse: PostResponse = postService.createPost(
+            request.apply {
+                this.writerId = writerId
+            }
+        )
 
         return ResponseEntity.ok()
             .body(postResponse)
@@ -51,7 +55,11 @@ class PostController(
         @RequestBody @Valid request: UpdatePostRequest,
         @WriterId writerId: Long
         ): ResponseEntity<PostResponse> {
-        val postResponse: PostResponse = postService.updatePost(request)
+        val postResponse: PostResponse = postService.updatePost(
+            request.apply {
+                this.writerId = writerId
+            }
+        )
 
         return ResponseEntity.ok()
             .body(postResponse)
@@ -62,7 +70,10 @@ class PostController(
         @PathVariable postId: Long,
         @WriterId writerId: Long
         ): ResponseEntity<Void> {
-        val request: DeletePostRequest = DeletePostRequest(postId)
+        val request: DeletePostRequest = DeletePostRequest(
+            postId = postId,
+            writerId = writerId
+        )
         postService.deletePost(request)
 
         return ResponseEntity.noContent()

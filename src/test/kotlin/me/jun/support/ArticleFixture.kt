@@ -96,7 +96,10 @@ val updateArticleRequest: () -> UpdateArticleRequest = fun (): UpdateArticleRequ
 }
 
 val deleteArticleRequest: () -> DeleteArticleRequest = fun (): DeleteArticleRequest {
-    return DeleteArticleRequest(ARTICLE_ID)
+    return DeleteArticleRequest(
+        articleId = ARTICLE_ID,
+        writerId = ARTICLE_WRITER_ID
+    )
 }
 
 val articleList: () -> List<Article> = fun (): List<Article> {

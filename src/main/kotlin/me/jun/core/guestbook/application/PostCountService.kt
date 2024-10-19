@@ -27,4 +27,10 @@ class PostCountService(
         postCount!!.increment()
         return postCount.value
     }
+
+    fun deletePostCount(postId: Long?): Unit {
+        val postCount: PostCount? = postCountRepository.findByPostId(postId)
+
+        postCountRepository.deleteById(postCount!!.postCountId!!)
+    }
 }
