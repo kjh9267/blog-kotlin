@@ -8,10 +8,10 @@ open class PostCount(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     open var postCountId: Long?,
 
-    @Column(name = "hits")
+    @Column(name = "hits", nullable = false)
     open var value: Long,
 
-    @Column
+    @Column(nullable = false)
     open var postId: Long,
 
     @Version

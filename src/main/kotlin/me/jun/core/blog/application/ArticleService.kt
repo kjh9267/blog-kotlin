@@ -53,7 +53,12 @@ class ArticleService(
     }
 
     fun deleteArticle(request: DeleteArticleRequest?): Unit {
-        articleRepository.deleteById(request!!.articleId)
+        val article: Article = articleRepository.findByArticleId(request!!.articleId)
+            ?: throw ArticleNotFoundException.of(request.articleId.toString())
+
+        article.writer.validate(request.writerId)
+
+        articleRepository.deleteById(request.articleId)
     }
 
     fun retrievePagedArticles(request: Pageable?): PagedArticleResponse {

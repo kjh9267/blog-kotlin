@@ -48,7 +48,13 @@ class PostService(
     }
 
     fun deletePost(request: DeletePostRequest?): Unit {
-        postRepository.deleteById(request!!.postId)
+        val post: Post = postRepository.findByPostId(request!!.postId)
+            ?: throw PostNotFoundException.of(request.postId.toString())
+
+        post.writer.validate(request.writerId)
+
+        postCountService.deletePostCount(post.postId)
+        postRepository.deleteById(request.postId)
     }
 
     fun retrievePagedPosts(pageable: Pageable?): PagedPostResponse {

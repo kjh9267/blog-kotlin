@@ -3,6 +3,7 @@ package me.jun.core.guestbook.application
 import me.jun.core.guestbook.application.dto.PagedPostResponse
 import me.jun.core.guestbook.application.dto.PostResponse
 import me.jun.core.guestbook.application.exception.PostNotFoundException
+import me.jun.core.guestbook.domain.Writer
 import me.jun.core.guestbook.domain.exception.WriterMismatchException
 import me.jun.core.guestbook.domain.repository.PostRepository
 import me.jun.support.*
@@ -118,14 +119,48 @@ class PostServiceTest {
 
     @Test
     fun deletePostTest() {
+        given(postRepository.findByPostId(any()))
+            .willReturn(post())
+
+        doNothing()
+            .`when`(postCountService)
+            .deletePostCount(any())
+
         doNothing()
             .`when`(postRepository)
             .deleteById(any())
 
         postService.deletePost(deletePostRequest())
 
+        verify(postCountService)
+            .deletePostCount(POST_ID)
+
         verify(postRepository)
             .deleteById(POST_ID)
+    }
+
+    @Test
+    fun noPost_deletePostFailTest() {
+        given(postRepository.findByPostId(any()))
+            .willReturn(null)
+
+        assertThrows(PostNotFoundException::class.java) {
+            postService.deletePost(deletePostRequest())
+        }
+    }
+
+    @Test
+    fun invalidWriter_deletePostFailTEst() {
+        given(postRepository.findByPostId(any()))
+            .willReturn(
+                post().apply {
+                    this.writer = Writer(2L)
+                }
+            )
+
+        assertThrows(WriterMismatchException::class.java) {
+            postService.deletePost(deletePostRequest())
+        }
     }
 
     @Test

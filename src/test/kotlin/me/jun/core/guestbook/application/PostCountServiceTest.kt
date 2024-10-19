@@ -8,8 +8,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentMatchers.any
+import org.mockito.BDDMockito.doNothing
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
+import org.mockito.Mockito.verify
 import org.mockito.junit.jupiter.MockitoExtension
 
 @ExtendWith(MockitoExtension::class)
@@ -49,5 +51,20 @@ class PostCountServiceTest {
 
         assertThat(postCountService.incrementPostCount(POST_ID))
             .isEqualTo(1L)
+    }
+
+    @Test
+    fun deletePostCountTest() {
+        given(postCountRepository.findByPostId(any()))
+            .willReturn(postCount())
+
+        doNothing()
+            .`when`(postCountRepository)
+            .deleteById(any())
+
+        postCountService.deletePostCount(POST_ID)
+
+        verify(postCountRepository)
+            .deleteById(any())
     }
 }

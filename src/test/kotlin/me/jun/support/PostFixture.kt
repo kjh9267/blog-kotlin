@@ -119,7 +119,8 @@ val updatePostRequest: () -> UpdatePostRequest = fun (): UpdatePostRequest {
 
 val deletePostRequest: () -> DeletePostRequest = fun (): DeletePostRequest {
     return DeletePostRequest(
-        postId = POST_ID
+        postId = POST_ID,
+        writerId = POST_WRITER_ID
     )
 }
 

@@ -36,7 +36,7 @@ class PostCountRepositoryTest {
 
     @Test
     fun noPostCount_findByPostIdFailTest() {
-        assertThat(postCountRepository.findByPostId(POST_COUNT_ID))
+        assertThat(postCountRepository.findByPostId(POST_ID))
             .isNull()
     }
 }
